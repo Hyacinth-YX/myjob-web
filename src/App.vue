@@ -1,32 +1,40 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated >
+      <q-toolbar>
+        <q-toolbar-title>
+          Myjob
+        </q-toolbar-title>
+
+        <q-btn dense flat size="lg" icon="account_circle"></q-btn>
+      </q-toolbar>
+      <q-toolbar inset>
+        <router-link to="/">Home</router-link>
+        <router-link to="/about">About</router-link>
+      </q-toolbar>
+    </q-header>
+
+    <q-page-container>
+      <router-view></router-view>
+    </q-page-container>
+  </q-layout>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
 
-#nav {
-  padding: 30px;
+export default {
+  name: 'LayoutDefault',
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  components: {
+  },
 
-    &.router-link-exact-active {
-      color: #42b983;
+  data () {
+    return {
+      leftDrawerOpen: false
     }
   }
 }
+</script>
+
+<style>
 </style>
