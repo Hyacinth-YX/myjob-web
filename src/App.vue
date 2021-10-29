@@ -9,8 +9,9 @@
         <q-btn dense flat size="lg" icon="account_circle"></q-btn>
       </q-toolbar>
       <q-toolbar inset>
-        <router-link to="/">Home</router-link>
-        <router-link to="/about">About</router-link>
+        <router-link to="/">Home</router-link> |
+        <router-link to="/discussion">Discussion</router-link> |
+        <router-link to="/post">Post</router-link> |
       </q-toolbar>
     </q-header>
 
