@@ -1,17 +1,15 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated >
-      <q-toolbar>
-        <q-toolbar-title>
-          Myjob
+      <q-toolbar class="toolbar q-pa-sm">
+        <q-toolbar-title class="q-ml-lg" style="font-family: 'Impact',fantasy;">
+          My Job
         </q-toolbar-title>
-
+        <router-link to="/" class="text-white">Home</router-link> |
+        <router-link to="/discussion" class="text-white">Discussion</router-link> |
+        <router-link to="/post" class="text-white">Post</router-link> |
+        <q-space></q-space>
         <q-btn dense flat size="lg" icon="account_circle"></q-btn>
-      </q-toolbar>
-      <q-toolbar inset>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/discussion">Discussion</router-link> |
-        <router-link to="/post">Post</router-link> |
       </q-toolbar>
     </q-header>
 
@@ -38,4 +36,10 @@ export default {
 </script>
 
 <style>
+body{
+  background: #2E333A;
+}
+.toolbar{
+  background: #2E333A;
+}
 </style>
