@@ -37,7 +37,7 @@
                   class="q-ma-sm"/>
         <q-scroll-area style="height: 300px">
           <q-list bordered separator >
-            <q-item clickable v-ripple v-for="itemContent in industry" :key="itemContent.id">
+            <q-item clickable v-ripple v-for="itemContent in industry" @click="goToIndustry" :key="itemContent.id">
               <q-item-section>
                 <q-item-label>{{ itemContent }}</q-item-label>
                 <q-item-label caption>年薪：100-200w</q-item-label>
@@ -87,6 +87,11 @@ export default {
       ]
     }
   },
+  methods:{
+    goToIndustry(){
+      this.$router.replace({name:'Industry'})
+    }
+  },
   mounted () {
     fetch('https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json')
         .then((res) => res.json())
@@ -125,40 +130,39 @@ export default {
               },
             ],
           });
-
           line.render();
         });
     const data = [
       {
-        type: '家具家电',
+        type: '0-1w',
         sales: 38,
       },
       {
-        type: '粮油副食',
+        type: '1-2w',
         sales: 52,
       },
       {
-        type: '生鲜水果',
+        type: '2-3w',
         sales: 61,
       },
       {
-        type: '美容洗护',
+        type: '3-4w',
         sales: 145,
       },
       {
-        type: '母婴用品',
+        type: '4-5w',
         sales: 48,
       },
       {
-        type: '进口食品',
+        type: '5-6w',
         sales: 38,
       },
       {
-        type: '食品饮料',
+        type: '6-7w',
         sales: 38,
       },
       {
-        type: '家庭清洁',
+        type: '7-8w',
         sales: 38,
       },
     ];
