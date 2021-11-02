@@ -4,7 +4,7 @@
     <div class="col">
     </div>
     <div class="col-7" style="padding:20px">
-      <div style="background:white">
+      <div style="background:#F5F6F9">
         <font size="5" face="arial" color="black" >
         {{posttitle}}
         </font>
@@ -40,56 +40,106 @@
       <router-view />
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-        </q-toolbar-title>
-        
+    <heatrank/>
+    
+    <q-page-sticky position="top-right" :offset="[35, 250]">
       <q-btn
         icon="expand_less"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="upward"
-      ></q-btn>
-
-        <q-btn
-        icon="person"
-        rounded flat
-        color="white"
-        @click="onlyperson"
-      ></q-btn>
-        
-        <q-btn
-        icon="message"
-        rounded flat
-        color="white"
-        @click="reply"
+        @mouseover="overToChangeTextStatus('upward')"
+        v-if="!buttonTextStatus.upward"
       ></q-btn>
       <q-btn
+        label="顶部"
+        rounded
+        color="grey"
+        @click="upward"
+        @mouseout="overToChangeTextStatus('upward')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
+
+     <q-page-sticky position="top-right" :offset="[35, 300]">
+      <q-btn
+        icon="message"
+        rounded
+        color="blue"
+        @click="comment"
+        @mouseover="overToChangeTextStatus('comment')"
+        v-if="!buttonTextStatus.comment"
+      ></q-btn>
+      <q-btn
+        label="评论"
+        rounded
+        color="grey"
+        @click="comment"
+        @mouseout="overToChangeTextStatus('comment')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
+
+    <q-page-sticky position="top-right" :offset="[35, 350]">
+      <q-btn
         icon="stars"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="stars"
+        @mouseover="overToChangeTextStatus('stars')"
+        v-if="!buttonTextStatus.stars"
       ></q-btn>
+      <q-btn
+        label="收藏"
+        rounded
+        color="grey"
+        @click="stars"
+        @mouseout="overToChangeTextStatus('stars')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
 
-        <q-btn
+    <q-page-sticky position="top-right" :offset="[35, 400]">
+      <q-btn
         icon="refresh"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="refresh"
-        @mouseover="refresh_on"
+        @mouseover="overToChangeTextStatus('refresh')"
+        v-if="!buttonTextStatus.refresh"
       ></q-btn>
-         <q-btn
-        icon="ios_share"
-        rounded flat
-        color="white"
-        @click="share"
+      <q-btn
+        label="刷新"
+        rounded
+        color="grey"
+        @click="refresh"
+        @mouseout="overToChangeTextStatus('refresh')"
+        v-else
       ></q-btn>
-       
-      </q-toolbar>
-    </q-footer>
+    </q-page-sticky>
 
-    <heatrank/>
+    <q-page-sticky position="top-right" :offset="[35, 450]">
+      <q-btn
+        icon="ios_share"
+        rounded
+        color="blue"
+        @click="share"
+        @mouseover="overToChangeTextStatus('share')"
+        v-if="!buttonTextStatus.share"
+      ></q-btn>
+      <q-btn
+        label="分享"
+        rounded
+        color="grey"
+        @click="share"
+        @mouseout="overToChangeTextStatus('share')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
+    
+   
+
+
   </div>
 </template>
 
@@ -109,6 +159,16 @@ export default {
             writer:"",
             text:"",
         },
+
+      buttonTextStatus:{
+            upward:false,
+            comment:false,
+            stars:false,
+            refresh:false,
+            share:false,
+
+        },
+      
       posttitle:'上海财经大学毕业生待遇仅次于清华',
       postbody:[
         {writer:"张三",body:"答主本硕均毕业于上海财经大学，根据最新的就业报告，上财毕业生的年收入排全国第二，仅次于清华"},
@@ -126,12 +186,8 @@ export default {
        document.body.scrollTop = document.documentElement.scrollTop = 0;
      },
 
-     /*只看楼主*/
-     onlyperson:function(){
-     },
-
      /* 评论 */
-    reply:function(){
+    comment:function(){
       document.body.scrollTop = document.documentElement.scrollTop = 9999;
     },
     /* 收藏 */  
@@ -162,6 +218,9 @@ export default {
     },
     goToPost(){
       this.$router.replace({name:"Post"});
+    },
+    overToChangeTextStatus(buttonName){
+        this.buttonTextStatus[buttonName] = !this.buttonTextStatus[buttonName]
     },
   },
   

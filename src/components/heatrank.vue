@@ -1,8 +1,9 @@
 <template>
-    <q-page-sticky position="top-right" :offset="[90, 20]">
+    <q-page-sticky position="top-right" :offset="[90, 0]">
       <div style="margin-top:50px" class="container shadow-3">
         <q-page padding >
-          <div class="heatrank text-bold">热度榜 <q-icon name="local_fire_department" color="red"/></div> 
+          <div class="heatrank text-bold"> <q-icon name="local_fire_department" color="red"/>
+          热度榜 <q-icon name="local_fire_department" color="red"/></div> 
           <div v-for="rank of ranks" :key="rank.id" class="heatrank q-ma-md">
           <a @click="goToPost" class="heatrank cursor-pointer">
             {{rank.rank}}.{{rank.title}}
@@ -42,6 +43,7 @@ export default {
       {rank:7,title:"上财校友加入私募基金一年的变化",heat:9993},
       {rank:8,title:"上财校友创业有感",heat:9992},
       {rank:9,title:"上财校友校友会",heat:9991},],
+      
     }
   },
   methods:{
