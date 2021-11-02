@@ -5,7 +5,6 @@
       <!--      信息框-->
       <div class="info-block col-4 q-pa-md">
         <!--        标题-->
-        <a class="test" href="#">sdlkfjdsf</a>
         <div class="text-h5 text-bold">{{ industryName }}</div>
         <!--        描述-->
         <div class="text-caption">{{ industryDescription }}</div>
@@ -45,26 +44,35 @@
       <q-list class="col" separator>
         <q-item v-for="item of jobList" :key="item.id" class="q-pa-md">
           <q-item-section>
-            <q-item-label class="text-bold text-h6">{{item.jobName}}</q-item-label>
+            <q-item-label class="text-bold text-h6 cursor-pointer cover-color" @click="goToJob">{{
+                item.jobName
+              }}
+            </q-item-label>
             <q-item-label caption lines="2">
               <div v-for="comment of item.hotComments" :key="comment.id">
-                <a>{{comment.time}}</a> <a class="text-bold text-blue">{{comment.uname}}:</a>{{comment.comment}} <q-icon name="thumb_up" class="q-ml-md"/> {{comment.like}} <q-icon name="thumb_down"/> {{comment.dislike}}
+                <a>{{ comment.time }}</a> <a class="text-bold text-blue">{{ comment.uname }}:</a>{{ comment.comment }}
+                <q-icon name="thumb_up" class="q-ml-md"/>
+                {{ comment.like }}
+                <q-icon name="thumb_down"/>
+                {{ comment.dislike }}
               </div>
             </q-item-label>
           </q-item-section>
 
-          <q-item-section side top >
-            <q-item-label class="text-primary text-bold">平均薪资：{{item.salaryAvg}}</q-item-label>
-            <q-item-label class="text-primary text-bold">岗位数量：{{item.positionNum}} </q-item-label>
-            <a><q-icon name="loupe"/> 详细信息</a>
-            <a><q-icon name="forum"/> 论坛讨论</a>
+          <q-item-section side top>
+            <q-item-label class="text-primary text-bold">平均薪资：{{ item.salaryAvg }}</q-item-label>
+            <q-item-label class="text-primary text-bold">岗位数量：{{ item.positionNum }}</q-item-label>
+            <a>
+              <q-icon name="loupe"/>
+              详细信息</a>
+            <a>
+              <q-icon name="forum"/>
+              论坛讨论</a>
           </q-item-section>
         </q-item>
-
         <q-separator spaced inset></q-separator>
       </q-list>
     </div>
-
   </div>
 </template>
 
@@ -82,35 +90,120 @@ export default {
       jobList: [
         {
           jobName: "产品经理", positionNum: 11203, salaryAvg: 234232, hotComments: [
-            {cid: 1122, uid: 2424, time:"2021-10-01", uname: "转角遇到爱", like: 522, dislike: 11, comment: "产品经理是一个非常有潜力的岗位网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"},
-            {cid: 1121, uid: 2421, time:"2021-10-01", uname: "春秋笔法", like: 123, dislike: 1, comment: "我是一名从业多年的产品经理，我网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"}
+            {
+              cid: 1122,
+              uid: 2424,
+              time: "2021-10-01",
+              uname: "转角遇到爱",
+              like: 522,
+              dislike: 11,
+              comment: "产品经理是一个非常有潜力的岗位网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"
+            },
+            {
+              cid: 1121,
+              uid: 2421,
+              time: "2021-10-01",
+              uname: "春秋笔法",
+              like: 123,
+              dislike: 1,
+              comment: "我是一名从业多年的产品经理，我网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"
+            }
           ]
         },
         {
           jobName: "高级产品经理", positionNum: 11203, salaryAvg: 234232, hotComments: [
-            {cid: 1122, uid: 2424, time:"2021-10-01", uname: "转角遇到爱", like: 522, dislike: 11, comment: "产品经理是一个非常有潜力的岗位网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"},
-            {cid: 1121, uid: 2421, time:"2021-10-01", uname: "春秋笔法", like: 123, dislike: 1, comment: "我是一名从业多年的产品经理，我网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"}
+            {
+              cid: 1122,
+              uid: 2424,
+              time: "2021-10-01",
+              uname: "转角遇到爱",
+              like: 522,
+              dislike: 11,
+              comment: "产品经理是一个非常有潜力的岗位网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"
+            },
+            {
+              cid: 1121,
+              uid: 2421,
+              time: "2021-10-01",
+              uname: "春秋笔法",
+              like: 123,
+              dislike: 1,
+              comment: "我是一名从业多年的产品经理，我网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试……"
+            }
           ]
         },
         {
           jobName: "前端开发工程师", positionNum: 11203, salaryAvg: 234232, hotComments: [
-            {cid: 1122, uid: 2424, time:"2021-10-01", uname: "转角遇到爱", like: 522, dislike: 11, comment: "产品经理是一个非常有潜力的岗位……"},
-            {cid: 1121, uid: 2421, time:"2021-10-01", uname: "春秋笔法", like: 123, dislike: 1, comment: "我是一名从业多年的产品经理，我……"}
+            {
+              cid: 1122,
+              uid: 2424,
+              time: "2021-10-01",
+              uname: "转角遇到爱",
+              like: 522,
+              dislike: 11,
+              comment: "产品经理是一个非常有潜力的岗位……"
+            },
+            {
+              cid: 1121,
+              uid: 2421,
+              time: "2021-10-01",
+              uname: "春秋笔法",
+              like: 123,
+              dislike: 1,
+              comment: "我是一名从业多年的产品经理，我……"
+            }
           ]
         },
         {
           jobName: "web前端开发工程师", positionNum: 11203, salaryAvg: 234232, hotComments: [
-            {cid: 1122, uid: 2424, time:"2021-10-01", uname: "转角遇到爱", like: 522, dislike: 11, comment: "产品经理是一个非常有潜力的岗位……"},
-            {cid: 1121, uid: 2421, time:"2021-10-01", uname: "春秋笔法", like: 123, dislike: 1, comment: "我是一名从业多年的产品经理，我……"}
+            {
+              cid: 1122,
+              uid: 2424,
+              time: "2021-10-01",
+              uname: "转角遇到爱",
+              like: 522,
+              dislike: 11,
+              comment: "产品经理是一个非常有潜力的岗位……"
+            },
+            {
+              cid: 1121,
+              uid: 2421,
+              time: "2021-10-01",
+              uname: "春秋笔法",
+              like: 123,
+              dislike: 1,
+              comment: "我是一名从业多年的产品经理，我……"
+            }
           ]
         },
         {
           jobName: "java开发工程师", positionNum: 11203, salaryAvg: 234232, hotComments: [
-            {cid: 1122, uid: 2424, time:"2021-10-01", uname: "转角遇到爱", like: 522, dislike: 11, comment: "产品经理是一个非常有潜力的岗位……"},
-            {cid: 1121, uid: 2421, time:"2021-10-01", uname: "春秋笔法", like: 123, dislike: 1, comment: "我是一名从业多年的产品经理，我……"}
+            {
+              cid: 1122,
+              uid: 2424,
+              time: "2021-10-01",
+              uname: "转角遇到爱",
+              like: 522,
+              dislike: 11,
+              comment: "产品经理是一个非常有潜力的岗位……"
+            },
+            {
+              cid: 1121,
+              uid: 2421,
+              time: "2021-10-01",
+              uname: "春秋笔法",
+              like: 123,
+              dislike: 1,
+              comment: "我是一名从业多年的产品经理，我……"
+            }
           ]
         },
       ]
+    }
+  },
+  methods: {
+    goToJob() {
+      this.$router.replace({name: "Job"})
     }
   },
   mounted() {
@@ -216,13 +309,8 @@ export default {
 .pie-graph-height {
   height: 200px;
 }
-.test:link{
-  color: yellow;
-}
-.test:hover{
-  color: red;
-}
-.test:visited{
-  color: blue;
+
+.cover-color:hover {
+  color: deepskyblue;
 }
 </style>
