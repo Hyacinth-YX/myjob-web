@@ -30,7 +30,7 @@
          <div class="col">
          </div>
          <div class="col-6"  id="row_col3">
-            <a @click="goToPost" class="atitle">{{post["title"]}}</a>
+            <a @click="goToPost" class="atitle cursor-pointer">{{post["title"]}}</a>
             <font size="5" face="arial" color="black">
             <p>{{post["body"]}}</p>
             </font>
@@ -39,15 +39,22 @@
          </div>
      </div>
     </div>
-
-    <div class="q-pa-lg flex flex-center">
-    <q-pagination
-      v-model="current"
-      color="purple"
-      :max="10"
-      :max-pages="6"
-      boundary-numbers
-    />
+     <div class="row">
+        <div class="col">
+        </div>   
+        <div class="col-6" id="row_col3">
+            <div class="q-pa-lg flex flex-center">
+            <q-pagination
+            v-model="current"
+            color="blue"
+            :max="10"
+            :max-pages="6"
+            boundary-numbers
+            />
+            </div>
+        </div>
+         <div class=col-4>
+         </div>
   </div>
 
     <div class="row">
@@ -81,42 +88,82 @@
     </div>
 
     <heatrank />
-
-    <!-- <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-        </q-toolbar-title>
-
-        <q-btn
+    <q-page-sticky position="top-right" :offset="[35, 250]">
+      <q-btn
         icon="expand_less"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="upward"
+        @mouseover="overToChangeTextStatus('upward')"
+        v-if="!buttonTextStatus.upward"
       ></q-btn>
+      <q-btn
+        label="顶部"
+        rounded 
+        color="grey"
+        @click="upward"
+        @mouseout="overToChangeTextStatus('upward')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
 
-        <q-btn
+    <q-page-sticky position="top-right" :offset="[35, 300]">
+      <q-btn
         icon="add_circle_outline"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="add_post"
+        @mouseover="overToChangeTextStatus('addpost')"
+        v-if="!buttonTextStatus.addpost"
       ></q-btn>
-      
+      <q-btn
+        label="发帖"
+        rounded
+        color="grey"
+        @click="add_post"
+        @mouseout="overToChangeTextStatus('addpost')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
+
+     <q-page-sticky position="top-right" :offset="[35, 350]">
       <q-btn
         icon="refresh"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="refresh"
+        @mouseover="overToChangeTextStatus('refresh')"
+        v-if="!buttonTextStatus.refresh"
       ></q-btn>
+      <q-btn
+        label="刷新"
+        rounded
+        color="grey"
+        @click="refresh"
+        @mouseout="overToChangeTextStatus('refresh')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
 
+    <q-page-sticky position="top-right" :offset="[35, 400]">
       <q-btn
         icon="ios_share"
-        rounded flat
-        color="white"
+        rounded
+        color="blue"
         @click="share"
+        @mouseover="overToChangeTextStatus('share')"
+        v-if="!buttonTextStatus.share"
       ></q-btn>
-      
-      </q-toolbar>
-    </q-footer> -->
+      <q-btn
+        label="分享"
+        rounded
+        color="grey"
+        @click="share"
+        @mouseout="overToChangeTextStatus('share')"
+        v-else
+      ></q-btn>
+    </q-page-sticky>
+    
 
   </q-page>
 </template>
@@ -133,6 +180,13 @@ export default {
             title:"",
             text:"",
         },
+        buttonTextStatus:{
+            upward:false,
+            addpost:false,
+            refresh:false,
+            share:false,
+
+        },
       current: 6,
       right: false,
       industrylist: [
@@ -141,10 +195,15 @@ export default {
       ],
       posts: [{ title: "post1", body: "These are the first 20 words of post1 These are the first 20 words of post1" ,writer:"one"},
       { title: "post2", body: "These are the first 20 words of post2 These are the first 20 words of post2",writer:"two" },
-      { title: "post3", body: "These are the first 20 words of post3 These are the first 20 words of post3",writer:"three"}],
+      { title: "post3", body: "These are the first 20 words of post3 These are the first 20 words of post3",writer:"three"},
+      {title: "post4", body: "These are the first 20 words of post4 These are the first 20 words of post4",writer:"three"},
+      {title: "post5", body: "These are the first 20 words of post5 These are the first 20 words of post5",writer:"three"}]
     }
   },
   methods:{
+      overToChangeTextStatus(buttonName){
+        this.buttonTextStatus[buttonName] = !this.buttonTextStatus[buttonName]
+      },
       sendPost:function(){
         console.log(this.sendPostData.text)
       },
