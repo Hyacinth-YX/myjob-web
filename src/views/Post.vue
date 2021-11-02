@@ -1,23 +1,40 @@
 <template>
   <div>
-   <q-layout view="hHh lpR fFf">
-    <div style="background:white">
-      <font size="5" face="arial" color="black">
-      {{posttitle}}
-      </font>
+    <div class="row" >
+    <div class="col">
+    </div>
+    <div class="col-7" style="padding:20px">
+      <div style="background:white">
+        <font size="5" face="arial" color="black" >
+        {{posttitle}}
+        </font>
+      </div>
+    </div>
+      
+      <div class="col-4">
+      </div>
+
     </div>
     
    
     <div v-for="body of postbody" :key="body.id"> 
       <forumItem :body="body"/>
     </div>
-    
 
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-7">
+            <q-input label-color="grey-8"  bg-color="white" filled  outlined clearable debounce="500"
+                v-model="sendCommentData.text" label="评论" counter type="textarea" >
+            </q-input>
+            <q-btn label="submit" style="float:right" @click="sendPost" ></q-btn>
 
-    <q-drawer show-if-above v-model="right" side="right" bordered>
-      <!-- drawer content -->
-          <heatrank/>
-    </q-drawer>
+        </div>
+        <div class="col-4">
+        </div>
+
+    </div>
 
     <q-page-container>
       <router-view />
@@ -72,7 +89,7 @@
       </q-toolbar>
     </q-footer>
 
-  </q-layout>
+    <heatrank/>
   </div>
 </template>
 
@@ -88,6 +105,10 @@ export default {
   data () {
     return {
       right: false,
+      sendCommentData:{
+            writer:"",
+            text:"",
+        },
       posttitle:'上海财经大学毕业生待遇仅次于清华',
       postbody:[
         {writer:"张三",body:"答主本硕均毕业于上海财经大学，根据最新的就业报告，上财毕业生的年收入排全国第二，仅次于清华"},
@@ -111,7 +132,7 @@ export default {
 
      /* 评论 */
     reply:function(){
-
+      document.body.scrollTop = document.documentElement.scrollTop = 9999;
     },
     /* 收藏 */  
      stars:function(){

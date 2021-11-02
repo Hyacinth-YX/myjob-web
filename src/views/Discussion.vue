@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-page>
       <div class="row">
         <div class="col">
         </div>   
@@ -40,8 +40,6 @@
      </div>
     </div>
 
-    
-
     <div class="q-pa-lg flex flex-center">
     <q-pagination
       v-model="current"
@@ -56,8 +54,8 @@
         <div class="col">
         </div>
         <div class="col-6">
-            <q-input bottom-slots label-color="grey-8" bg-color="white" filled dark outlined clearable debounce="500"
-                v-model="Text" label="标题" counter maxlength="20">
+            <q-input  bottom-slots label-color="grey-8" bg-color="white" filled outlined clearable debounce="500"
+                v-model="sendPostData.title" label="标题" counter maxlength="20">
             </q-input>
 
         </div>
@@ -71,9 +69,10 @@
         <div class="col">
         </div>
         <div class="col-6">
-            <q-input bottom-slots label-color="grey-8" bg-color="white" filled dark outlined clearable debounce="500"
-                v-model="Text" label="正文" counter maxlength="200">
+            <q-input label-color="grey-8"  bg-color="white" filled  outlined clearable debounce="500"
+                v-model="sendPostData.text" label="正文" counter type="textarea" >
             </q-input>
+            <q-btn label="submit" style="float:right" @click="sendPost" ></q-btn>
 
         </div>
         <div class="col-4">
@@ -81,16 +80,9 @@
 
     </div>
 
-    <q-drawer show-if-above v-model="right" side="right" bordered>
-      <!-- drawer content -->
-      <heatrank/>
-    </q-drawer>
+    <heatrank />
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-
-    <q-footer elevated class="bg-grey-8 text-white">
+    <!-- <q-footer elevated class="bg-grey-8 text-white">
       <q-toolbar>
         <q-toolbar-title>
         </q-toolbar-title>
@@ -124,9 +116,9 @@
       ></q-btn>
       
       </q-toolbar>
-    </q-footer>
+    </q-footer> -->
 
-  </q-layout>
+  </q-page>
 </template>
 
 <script>
@@ -137,18 +129,25 @@ export default {
   },
   data () {
     return {
+        sendPostData:{
+            title:"",
+            text:"",
+        },
       current: 6,
       right: false,
       industrylist: [
         { name: "计算机/网络/技术类", rank: 1, average: 10000, nposts: 50 },
         { name: "销售类", rank: 2, average: 9999, nposts: 40 },
       ],
-      posts: [{ title: "post1", body: "These are the first 20 words of post1" ,writer:"one"},
-      { title: "post2", body: "These are the first 20 words of post2",writer:"two" },
-      { title: "post3", body: "These are the first 20 words of post3",writer:"three"}],
+      posts: [{ title: "post1", body: "These are the first 20 words of post1 These are the first 20 words of post1" ,writer:"one"},
+      { title: "post2", body: "These are the first 20 words of post2 These are the first 20 words of post2",writer:"two" },
+      { title: "post3", body: "These are the first 20 words of post3 These are the first 20 words of post3",writer:"three"}],
     }
   },
   methods:{
+      sendPost:function(){
+        console.log(this.sendPostData.text)
+      },
       /*回到顶部*/
      upward:function(){
        document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -207,6 +206,7 @@ a:visited.atitle{
   background:#F5F6F9;
   border-width:1px 1px 0px 1px;
   border-style: solid;
+  border-color: #DCDFE5;
   padding: 20px;
 }
 

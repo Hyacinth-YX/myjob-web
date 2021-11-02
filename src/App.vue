@@ -37,7 +37,7 @@ export default {
 
 <style>
 body{
-  background: #2E333A;
+  background: rgb(250, 250, 250);
 }
 .toolbar{
   background: #2E333A;

@@ -1,16 +1,17 @@
 <template>
-      <q-page-container style="margin-top:50px">
-        
+    <q-page-sticky position="top-right" :offset="[90, 20]">
+      <div style="margin-top:50px" class="container shadow-3">
         <q-page padding >
-          <div class="heatrank">热度榜</div> 
-          <div v-for="rank of ranks" :key="rank.id" class="heatrank">
-          <a @click="goToPost" class="heatrank">
+          <div class="heatrank text-bold">热度榜 <q-icon name="local_fire_department" color="red"/></div> 
+          <div v-for="rank of ranks" :key="rank.id" class="heatrank q-ma-md">
+          <a @click="goToPost" class="heatrank cursor-pointer">
             {{rank.rank}}.{{rank.title}}
           </a>
           <div>累计阅读：{{rank.heat}}</div>
           </div>
         </q-page>
-      </q-page-container>
+      </div>
+    </q-page-sticky>
 </template>
 
 <style>
@@ -18,6 +19,13 @@
   width:300px;
   background: #FFFFFF;
   }
+
+.container{
+  position: absolute;
+  top:5%;
+  right: 5%;
+  background: white;
+}
 </style>
 
 <script>
