@@ -42,4 +42,7 @@ body{
 .toolbar{
   background: #2E333A;
 }
+body.post{
+  background: white;
+}
 </style>
