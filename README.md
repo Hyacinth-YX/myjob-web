@@ -1,5 +1,7 @@
 # myjob
 
+## 项目已使用hash模式打包在dist文件夹下，可本地直接查看
+
 ## Project setup
 ```
 npm install
