@@ -4,12 +4,13 @@
       <q-toolbar class="toolbar q-pa-sm">
         <q-toolbar-title class="q-ml-lg" style="font-family: 'Impact',fantasy;">
           My Job
+          <q-btn flat label="首页" class="q-ml-lg" @click="goToHome"></q-btn>
+          <q-btn flat label="职业讨论" @click="goToDiscussion"></q-btn>
         </q-toolbar-title>
-        <router-link to="/" class="text-white">Home</router-link> |
-        <router-link to="/discussion" class="text-white">Discussion</router-link> |
-        <router-link to="/post" class="text-white">Post</router-link> |
+
         <q-space></q-space>
-        <q-btn dense flat size="lg" icon="account_circle"></q-btn>
+        <q-btn flat label="Sign In" @click="goToLogin"></q-btn>
+        <q-btn dense flat size="lg" icon="account_circle" @click="goToLogin"></q-btn>
       </q-toolbar>
     </q-header>
 
@@ -23,13 +24,19 @@
 
 export default {
   name: 'LayoutDefault',
-
-  components: {
-  },
-
   data () {
     return {
-      leftDrawerOpen: false
+    }
+  },
+  methods:{
+    goToLogin(){
+      this.$router.replace({name:"Login"})
+    },
+    goToHome(){
+      this.$router.replace({name:"Home"})
+    },
+    goToDiscussion(){
+      this.$router.replace({name:"Discussion"})
     }
   }
 }
