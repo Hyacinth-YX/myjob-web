@@ -42,7 +42,7 @@
       <div class="text-bold text-h5 q-ma-md col">行业岗位排行榜</div>
       <!--      名称、岗位数量、薪资、热门讨论-->
       <q-list class="col" separator>
-        <q-item v-for="item of jobList" :key="item.id" class="q-pa-md">
+        <q-item v-for="item of jobList" :key="item.id" class="q-pa-md hover-active">
           <q-item-section>
             <q-item-label class="text-bold text-h6 cursor-pointer cover-color" @click="goToJob">{{
                 item.jobName
@@ -298,8 +298,9 @@ export default {
 }
 
 .info-block {
-  border: solid;
   background: white;
+  border: solid 10px #F5F6F9;
+  border-radius: 20px;
 }
 
 .trend-graph-height {
@@ -312,5 +313,9 @@ export default {
 
 .cover-color:hover {
   color: deepskyblue;
+}
+
+.hover-active:hover{
+  background: azure;
 }
 </style>
