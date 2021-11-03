@@ -30,7 +30,7 @@
     </div>
 
     <!--    排行榜-->
-    <div class="rank-container q-ma-lg row q-mb-lg" style="background: transparent">
+    <div class="rank-container q-ma-lg row q-mb-lg shadow-3" style="background: transparent">
       <!--排行榜框-->
       <div class="rank-container col">
         <q-select filled rounded v-model="rankSelect" label="排行依据" dense :options="rankOptions"

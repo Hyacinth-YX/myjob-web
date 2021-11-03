@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'heatrank',
+  name: 'HeatRank',
   data() {
     return {
       ranks: [{rank: 1, title: "上海财经大学毕业生待遇仅次于清华", heat: 9999},

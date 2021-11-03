@@ -1,48 +1,41 @@
 <template>
   <q-page>
+    <!--底层页面-->
     <div class="row">
-      <div class="col">
-      </div>
-      <div class="col-6 row_col3">
-        <div class="title">
-          {{ industrylist[0].name }}
+      <!--帖子部分-->
+      <div class="col-8  q-ml-xl">
+        <!--标题行-->
+        <div>
+          <a class="text-h4">{{ industrylist[0].name }}</a>
           <q-btn
-              label="+关注"
-              flat
-              text-color="red"
-              @click="successfully"
+              :label="personalStatus.star? '已关注': '+关注'"
+              color="red"
+              size="sm"
+              rounded
+              class="q-ml-sm"
+              @click="changeStarStatus"
+              v-if="showStarBtn"
           ></q-btn>
-          <div>
-            <font size="5" face="arial" color="black">
-              当前行业薪资排名{{ industrylist[0]["rank"] }}，平均薪资{{
-                industrylist[0]["average"]
-              }}
-            </font>
-          </div>
         </div>
-      </div>
-      <div class="col-4">
-      </div>
-    </div>
-
-    <div v-for="post of posts" :key="post.id" class="posttitle">
-      <div class="row">
-        <div class="col">
+        <!--信息行-->
+        <div class="text-bold text-body1">
+          当前行业薪资排名{{ industrylist[0]["rank"] }}，平均薪资{{ industrylist[0]["average"] }}
         </div>
-        <div class="col-6 row_col3">
-          <a @click="goToPost" class="atitle cursor-pointer">{{ post["title"] }}</a>
-          <font size="5" face="arial" color="black">
-            <p>{{ post["body"] }}</p>
-          </font>
+        <!--帖子行-->
+        <q-list bordered separator>
+          <discussion-item v-for="post of posts" :key="post.id" :post-data="post" class="q-ma-sm"></discussion-item>
+        </q-list>
+        <!--发帖行-->
+        <div>
+          <q-input label-color="grey-8" bg-color="white" outlined clearable debounce="500"
+                   class="q-mb-sm"
+                   v-model="sendPostData.title" label="标题" counter maxlength="20"/>
+          <q-input label-color="grey-8" bg-color="white" outlined debounce="500"
+                   class="q-mb-sm"
+                   v-model="sendPostData.text" label="评论" counter type="textarea"/>
+          <q-btn label="发个帖子" color="blue" style="float:right" @click="sendPost"></q-btn>
         </div>
-        <div class=col-4>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-      </div>
-      <div class="col-6 row_col3">
+        <!--页码行-->
         <div class="q-pa-lg flex flex-center">
           <q-pagination
               v-model="current"
@@ -53,130 +46,104 @@
           />
         </div>
       </div>
-      <div class=col-4>
+      <!--排行榜-->
+      <div class="col-3 q-ma-sm">
+        <heat-rank/>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col">
-      </div>
-      <div class="col-6">
-        <q-input bottom-slots label-color="grey-8" bg-color="white" filled outlined clearable debounce="500"
-                 v-model="sendPostData.title" label="标题" counter maxlength="20">
-        </q-input>
+    <!--粘贴按钮-->
+    <div>
+      <q-page-sticky position="top-right" :offset="[35, 250]">
+        <q-btn
+            icon="expand_less"
+            rounded
+            color="blue"
+            @click="upward"
+            @mouseover="overToChangeTextStatus('upward')"
+            v-if="!buttonTextStatus.upward"
+        ></q-btn>
+        <q-btn
+            label="顶部"
+            rounded
+            color="grey"
+            @click="upward"
+            @mouseout="overToChangeTextStatus('upward')"
+            v-else
+        ></q-btn>
+      </q-page-sticky>
 
-      </div>
-      <div class="col-4">
-      </div>
+      <q-page-sticky position="top-right" :offset="[35, 300]">
+        <q-btn
+            icon="add_circle_outline"
+            rounded
+            color="blue"
+            @click="add_post"
+            @mouseover="overToChangeTextStatus('addpost')"
+            v-if="!buttonTextStatus.addpost"
+        ></q-btn>
+        <q-btn
+            label="发帖"
+            rounded
+            color="grey"
+            @click="add_post"
+            @mouseout="overToChangeTextStatus('addpost')"
+            v-else
+        ></q-btn>
+      </q-page-sticky>
 
+      <q-page-sticky position="top-right" :offset="[35, 350]">
+        <q-btn
+            icon="refresh"
+            rounded
+            color="blue"
+            @click="refresh"
+            @mouseover="overToChangeTextStatus('refresh')"
+            v-if="!buttonTextStatus.refresh"
+        ></q-btn>
+        <q-btn
+            label="刷新"
+            rounded
+            color="grey"
+            @click="refresh"
+            @mouseout="overToChangeTextStatus('refresh')"
+            v-else
+        ></q-btn>
+      </q-page-sticky>
+
+      <q-page-sticky position="top-right" :offset="[35, 400]">
+        <q-btn
+            icon="ios_share"
+            rounded
+            color="blue"
+            @mouseover="overToChangeTextStatus('share')"
+            v-if="!buttonTextStatus.share"
+        ></q-btn>
+        <q-btn
+            label="分享"
+            rounded
+            color="grey"
+            @mouseout="overToChangeTextStatus('share')"
+            v-else
+        ></q-btn>
+      </q-page-sticky>
     </div>
-
-
-    <div class="row">
-      <div class="col">
-      </div>
-      <div class="col-6">
-        <q-input label-color="grey-8" bg-color="white" filled outlined clearable debounce="500"
-                 v-model="sendPostData.text" label="正文" counter type="textarea">
-        </q-input>
-        <q-btn label="submit" style="float:right" @click="sendPost"></q-btn>
-
-      </div>
-      <div class="col-4">
-      </div>
-
-    </div>
-
-    <heatrank/>
-    <q-page-sticky position="top-right" :offset="[35, 250]">
-      <q-btn
-          icon="expand_less"
-          rounded
-          color="blue"
-          @click="upward"
-          @mouseover="overToChangeTextStatus('upward')"
-          v-if="!buttonTextStatus.upward"
-      ></q-btn>
-      <q-btn
-          label="顶部"
-          rounded
-          color="grey"
-          @click="upward"
-          @mouseout="overToChangeTextStatus('upward')"
-          v-else
-      ></q-btn>
-    </q-page-sticky>
-
-    <q-page-sticky position="top-right" :offset="[35, 300]">
-      <q-btn
-          icon="add_circle_outline"
-          rounded
-          color="blue"
-          @click="add_post"
-          @mouseover="overToChangeTextStatus('addpost')"
-          v-if="!buttonTextStatus.addpost"
-      ></q-btn>
-      <q-btn
-          label="发帖"
-          rounded
-          color="grey"
-          @click="add_post"
-          @mouseout="overToChangeTextStatus('addpost')"
-          v-else
-      ></q-btn>
-    </q-page-sticky>
-
-    <q-page-sticky position="top-right" :offset="[35, 350]">
-      <q-btn
-          icon="refresh"
-          rounded
-          color="blue"
-          @click="refresh"
-          @mouseover="overToChangeTextStatus('refresh')"
-          v-if="!buttonTextStatus.refresh"
-      ></q-btn>
-      <q-btn
-          label="刷新"
-          rounded
-          color="grey"
-          @click="refresh"
-          @mouseout="overToChangeTextStatus('refresh')"
-          v-else
-      ></q-btn>
-    </q-page-sticky>
-
-    <q-page-sticky position="top-right" :offset="[35, 400]">
-      <q-btn
-          icon="ios_share"
-          rounded
-          color="blue"
-          @click="share"
-          @mouseover="overToChangeTextStatus('share')"
-          v-if="!buttonTextStatus.share"
-      ></q-btn>
-      <q-btn
-          label="分享"
-          rounded
-          color="grey"
-          @click="share"
-          @mouseout="overToChangeTextStatus('share')"
-          v-else
-      ></q-btn>
-    </q-page-sticky>
-
-
   </q-page>
 </template>
 
 <script>
-import heatrank from '../components/heatrank.vue';
+import HeatRank from '../components/HeatRank.vue';
+import DiscussionItem from "../components/DiscussionItem";
 
 export default {
   components: {
-    heatrank
+    DiscussionItem,
+    HeatRank
   },
   data() {
     return {
+      showStarBtn:true,
+      personalStatus: {},
       sendPostData: {
         title: "",
         text: "",
@@ -226,7 +193,13 @@ export default {
       this.buttonTextStatus[buttonName] = !this.buttonTextStatus[buttonName]
     },
     sendPost: function () {
-      console.log(this.sendPostData.text)
+      this.$q.notify({
+        message: '请先登录!',
+        color: 'red',
+        position: 'top-right',
+        icon: 'announcement'
+      })
+      this.$router.replace({name:"Login"})
     },
     /*回到顶部*/
     upward: function () {
@@ -240,13 +213,29 @@ export default {
     refresh: function () {
       location.reload();
     },
-    /* 分享 */
-    share: function () {
-
-    },
     /*关注成功*/
-    successfully: function () {
-      alert("关注成功");
+    changeStarStatus: function () {
+      this.showStarBtn = false;
+      if(this.personalStatus.star){
+        this.$q.notify({
+          message: '已经取消关注555~',
+          color: 'blue',
+          position: 'top-right',
+          icon: 'announcement'
+        })
+        this.personalStatus.star = false
+      }else{
+        this.$q.notify({
+          message: '关注成功!',
+          color: 'green',
+          position: 'top-right',
+          icon: 'announcement'
+        })
+        this.personalStatus.star = true
+      }
+      this.$nextTick().then(()=>{
+        this.showStarBtn = true;
+      })
     },
     goToPost() {
       this.$router.replace({name: "Post"});
@@ -257,40 +246,6 @@ export default {
 </script>
 
 
-<style>
-.title {
-  /* also float left so it goes next to the sidebar */
-  /* this should be the wrapper minus sidebar and padding on both */
-  background-color: #F5F6F9;
-  padding: 5px;
-  margin: 0px 80px 0px 0px;
-  color: black;
-  font-size: 40px;
-}
-
-/*links*/
-
-a.atitle {
-  font-size: 30px;
-  color: blue;
-  text-decoration: none;
-}
-
-a:hover.atitle {
-  text-decoration: underline;
-}
-
-a:visited.atitle {
-  color: purple;
-}
-
-.row_col3 {
-  background: #F5F6F9;
-  border-width: 1px 1px 0px 1px;
-  border-style: solid;
-  border-color: #DCDFE5;
-  padding: 20px;
-}
-
+<style scoped>
 
 </style>

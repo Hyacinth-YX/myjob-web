@@ -2,7 +2,7 @@
   <div>
     <particles-bg :bg="true" type="circle" num=10></particles-bg>
     <div class="shadow-3 register-card bg-white " style="border-radius:25px">
-      <div class="text-h4 text-bold q-ma-lg" style="text-align: center">
+      <div class="text-h4 text-bold q-pa-md" style="text-align: center">
         <q-icon name="how_to_reg"/>
         注册账户
       </div>
@@ -44,12 +44,12 @@
             lazy-rules
         />
 
-        <q-toggle class="q-ml-xl" v-model="accept">I accept the license and <a href="#">terms</a></q-toggle>
+        <q-toggle v-model="accept">I accept the license and <a href="#">terms</a></q-toggle>
 
         <q-btn flat label="点我人机验证！" color="blue" icon="fingerprint" @click="peopleJudge"></q-btn>
         <Vcode :show="isHidden" @success="success" @close="close" name="validation"/>
 
-        <div style="text-align: center">
+        <div style="text-align: center" class="q-ma-md">
           <q-btn label="立即注册" type="submit" color="primary" :disable="!accept || !isPeople"/>
         </div>
 
@@ -119,10 +119,9 @@ export default {
 
 <style scoped>
 .register-card {
-  width: 60%;
-  position: absolute;
-  left: 20%;
-  top: 15%;
-  height: 550px;
+  width: 45%;
+  margin-left: 30%;
+  margin-top: 30px;
+  height: 600px;
 }
 </style>
