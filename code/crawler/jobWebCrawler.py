@@ -31,7 +31,6 @@ options.add_argument('--disable-gpu')
 driver = webdriver.Chrome(
     executable_path=chrome_driver_path, chrome_options=options)
 
-
 driver.get(query_template_url.format(query_str="医药代表", page_num=1))
 try:
     job_body = WebDriverWait(driver, 10).until(
