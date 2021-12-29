@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   title: MyJob Platform API Documentation
-  version: "1.0"
+  version: "1.0.0"
   description: "This is the API documentation of MyJob Platform website."
   contact:
     email: "clearbamboo@outlook.com"
@@ -11,6 +11,14 @@ info:
 servers:
   - url: https://localhost:8080/api
     description: "Local test server"
+
+components:
+  schemas:
+    jobCat:
+      type: string
+      description: Code string of bigjob
+      example: "2005003008"
+
 tags:
   - name: bigJob
     description: "The information about 'bigJob'"
@@ -31,7 +39,6 @@ paths:
         - "test"
       summary: "Test if the API is usable"
       description: ""
-      
       responses:
         "200":
           description: OK
@@ -42,11 +49,101 @@ paths:
       summary: Returns a list of users.
       description: Optional extended description in CommonMark or HTML.
       responses:
-        '200':
+        "200":
           description: A JSON array of user names
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
-                items: 
+                items:
                   type: string
+  /bigjob/getJobs:
+    get:
+      tags:
+        - "bigJob"
+      summary: Get Job by holland code
+      parameters:
+        - in: query
+          name: key1
+          required: true
+          description: First Holland code
+          schema:
+            type: string
+            example: "I"
+        - in: query
+          name: key2
+          required: true
+          description: Second Holland code
+          schema:
+            type: string
+            example: "S"
+        - in: query
+          name: key3
+          required: true
+          description: Third Holland code
+          schema:
+            type: string
+            example: "R"
+      responses:
+        "200":
+          description: Successfully get big job information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobCat:
+                    $ref: "#/components/schemas/jobCat"
+                  bigJobImg:
+                    type: string
+                    description: Job cartoon image from 104 website
+                    example: "https:\/\/static.104.com.tw\/gtnew\/img\/character\/bigRole\/2005003008.png"
+                  jobName:
+                    type: string
+                    description: Name of Job
+                    example: "醫藥業務代表"
+                  jobDesc:
+                    type: string
+                    description: Simple description of Job
+                    example: "我會把藥賣出去，推廣客戶需要的醫療產品！"
+                  jobWorks:
+                    type: string
+                    description: Specific description of job work
+                    example: "拜訪固定或非固定地區醫院、診所、藥局客戶，以開發或維護客戶關係。\n銷售及推廣公司產品，例如醫療研究用儀器或醫藥耗材等。\n教育及示範產品使用方式。\n協助客戶使用產品。\n提供新客戶相關之行銷或經營輔導。\n宣導與執行公司的理念予店家。"
+                  subject1:
+                    type: string
+                    description: First level subject
+                    example: "social"
+                  subject2:
+                    type: string
+                    description: Second level subject
+                    example: "biology"
+  /bigjob/tags:
+    get:
+      description: "Get inffered tags of big job"
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  certification:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        desc:
+                          type: string
+                          example: Outlook
+
+                    example:
