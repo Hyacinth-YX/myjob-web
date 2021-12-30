@@ -26,8 +26,6 @@ tags:
     description: "Specific job information"
   - name: user
     description: "User control"
-  - name: "personality"
-    description: "Personality calculation"
   - name: "graph"
     description: "Some data to draw graph"
   - name: "test"
@@ -57,7 +55,7 @@ paths:
                 type: array
                 items:
                   type: string
-  /bigjob/getJobs:
+  /bigjob/jobs:
     get:
       tags:
         - "bigJob"
@@ -144,6 +142,261 @@ paths:
                       properties:
                         desc:
                           type: string
+                          example: 普考护士执照
+                        count:
+                          type: integer
+                          example: 500
+                  skill:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        desc:
+                          type: string
+                          example: 业务或道路开发
+                        count:
+                          type: integer
+                          example: 500
+                  tool:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        desc:
+                          type: string
                           example: Outlook
-
-                    example:
+                        count:
+                          type: integer
+                          example: 500
+  /bigjob/personality:
+    get:
+      description: Get five dimantional personality result, which reflect positive(乐观正面), cooperation(团队合作)、cautious(谨慎坚毅)、dominate(积极主导)、innovative(创新开放)
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: number
+                example: [3.82, 0.86, 3.81, 4.18, 4.45]
+  /bigjob/wage:
+    get:
+      description: Get wage of bigjob
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avgWage:
+                    type: number
+                    example: 45333.12
+  /bigjob/major:
+    get:
+      description: get the major of this bigjob
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    majorName:
+                      type: string
+                      example: 护理学系
+                    count:
+                      type: integer
+                      example: 500
+  /bigjob/ageSex:
+    get:
+      description: get age and sex distribution
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  {
+                    "17": { "male": 0.2, "female": 0.05 },
+                    "18": { "male": 0.3, "female": 0.01 },
+                  }
+  /bigjob/task:
+    get:
+      description: ""
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+                    example: 负责公司医疗器材产品推广
+                  missions:
+                    type: array
+                    items:
+                      type: string
+                      example: 协助客户使用产品
+  /user/login:
+    get:
+      description: ""
+      tags:
+        - "user"
+      parameters: []
+      responses:
+        "200":
+          description: OK
+  /user/register:
+    get:
+      description: ""
+      tags:
+        - "user"
+      parameters: []
+      responses:
+        "200":
+          description: OK
+  /job/detail:
+    get:
+      description: "get specific job details"
+      tags:
+        - "job"
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobName:
+                    type: string
+                    example: 医药代表
+                  jobSalary:
+                    type: string
+                    example: 15-20k·13薪
+                  jobLimitExperience:
+                    type: string
+                    example: 经验不限
+                  jobLimitStudy:
+                    type: string
+                    example: 大专
+                  jobArea:
+                    type: string
+                    example: 上海·浦东新区·张江
+                  companyName:
+                    type: string
+                    example: 阿斯利康
+                  financialStatus:
+                    type: string
+                    example: 已上市
+                  scale:
+                    type: string
+                    example: 10000人以上
+                  companyLogo:
+                    type: string
+                    example: companyLogo
+                  bonus:
+                    type: string
+                    example: 带薪年假
+  /user/logout:
+    get:
+      description: ""
+      tags:
+        - "user"
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  loginStatus:
+                    type: boolean
+                    example: true
+  /bigjob/hollandCode:
+    post:
+      description: "holland code calculation"
+      tags:
+        - "bigjob"
+      requestBody:
+        description: true of false answer of hollan test
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hollandAnswer:
+                  type: array
+                  example: [0, 1, 1, 1, 1, 0, 1, 1, 0, 1]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key1:
+                    type: string
+                    example: "I"
+                  key2:
+                    type: string
+                    example: "I"
+                  key3:
+                    type: string
+                    example: "I"
