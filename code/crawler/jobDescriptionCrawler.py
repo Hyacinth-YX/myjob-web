@@ -15,7 +15,6 @@ warnings.filterwarnings('ignore')
 
 os.chdir(os.path.dirname(__file__))
 # ----------config-----------
-
 pc_agent = [
     "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50",
     "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50",
@@ -39,8 +38,6 @@ pc_agent = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
     "Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0"
 ]
-
-
 base_url = "https://www.zhipin.com"
 query_template_url = base_url + \
     "/c101020100/?query={query_str}&page={page_num}&ka=page-{page_num}"
@@ -75,12 +72,11 @@ def getRes(url):
             }
             res = requests.get(url,
                                headers=headers,
-                               proxies={"http": "http://{}".format(proxy)},timeout=3000)
+                               proxies={"http": "http://{}".format(proxy)}, timeout=3000)
             res.raise_for_status()
             code = res.json().get('code')
             if code != 0:
                 raise Exception
-            # 使用代理访问
             return res
         except Exception as e:
             delete_proxy(proxy)
@@ -88,7 +84,6 @@ def getRes(url):
             print(f"\r失败了，检查一下是不是需要机器人检测{epoch}", "")
 
 
-# ---------------------------
 df = pd.read_csv('./data.csv', header=None)
 Jid = df.iloc[1420:, 2]
 Lid = df.iloc[1420:, 3]
@@ -96,7 +91,7 @@ descs = []
 for jid, lid in tqdm(zip(Jid, Lid)):
     desc = {}
     try:
-        time.sleep(3+ random.random()*5)
+        time.sleep(3 + random.random()*5)
         desc['dataJid'] = jid
         desc['dataLid'] = lid
 
