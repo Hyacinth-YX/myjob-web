@@ -9,7 +9,7 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 servers:
-  - url: https://localhost:8080/api
+  - url: http://127.0.0.1:5000
     description: "Local test server"
 
 components:
@@ -371,7 +371,7 @@ paths:
     post:
       description: "holland code calculation"
       tags:
-        - "bigjob"
+        - "bigJob"
       requestBody:
         description: true of false answer of hollan test
         required: true

@@ -31,15 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bigjob',
+    'job',
+    'user'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -118,3 +123,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# CORS_ORIGIN_ALLOW_ALL = True    #所有域名都可以跨域访问
+CORS_ORIGIN_WHITELIST = [ 
+    "http://127.0.0.1:5002",
+    "http://localhost:5002",
+    "http://localhost:5001",
+    "http://127.0.0.1:5001"
+]

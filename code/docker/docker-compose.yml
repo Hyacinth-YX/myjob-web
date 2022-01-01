@@ -1,0 +1,11 @@
+version: '3'
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_ui_container
+    ports:
+        - "5002:8080"
+    volumes:
+        - ../../doc/api-doc:/usr/share/nginx/html/doc
+    environment:
+        API_URL: doc/myjob-api.yml
