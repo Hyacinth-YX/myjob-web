@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-# CORS_ORIGIN_ALLOW_ALL = True    #所有域名都可以跨域访问
+CORS_ORIGIN_ALLOW_ALL = True    #所有域名都可以跨域访问
 CORS_ORIGIN_WHITELIST = [ 
     "http://127.0.0.1:5002",
     "http://localhost:5002",

@@ -382,7 +382,99 @@ paths:
               properties:
                 hollandAnswer:
                   type: array
-                  example: [0, 1, 1, 1, 1, 0, 1, 1, 0, 1]
+                  example:
+                    [
+                      0,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      0,
+                      0,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                    ]
       responses:
         "200":
           description: OK
@@ -400,3 +492,31 @@ paths:
                   key3:
                     type: string
                     example: "I"
+  /bigjob/hollandCodeQuestions:
+    get:
+      description: ""
+      tags:
+        - "bigJob"
+      parameters:
+        - in: query
+          name: startIndex
+          description: default to 0
+          schema:
+            type: number
+            example: 0
+        - in: query
+          name: number
+          description: number of get questions, default to 1
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: "我喜欢把东西拆开，看看能否修理他们。"

@@ -9,5 +9,6 @@ urlpatterns = [
     path('major', views.major),
     path('ageSex', views.ageSex),
     path('task', views.tags),
-    path('hollandCode', views.hollandCode)
+    path('hollandCode', views.hollandCode),
+    path('hollandCodeQuestions', views.hollandCodeQuestions)
 ]
