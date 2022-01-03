@@ -6,8 +6,11 @@ import pandas as pd
 from zhconv import convert
 import requests as req
 from .models import HollandQuestions
+from utils.http import HttpWrapper
+from utils.errors import MethodError, NoValue
 
 
+@HttpWrapper
 def jobs(requests: HttpRequest):
     if requests.method == "GET":
         a = {
@@ -19,12 +22,13 @@ def jobs(requests: HttpRequest):
             "subject1": "social",
             "subject2": "biology"
         }
-        zh_result = {k: convert(v, 'zh-cn') for k, v in a.items()}
-        return HttpResponse(json.dumps(zh_result))
+        result = {k: convert(v, 'zh-cn') for k, v in a.items()}
+        return result
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def tags(requests: HttpRequest):
     """
     https://www.104.com.tw/jb/jobwiki/jobCatMaster/tagCloudJSON?jobcat=2005003008&type=1%2C2%2C3%2C4
@@ -44,18 +48,18 @@ def tags(requests: HttpRequest):
                 result[kind] = [{'desc': convert(row.get('funDesc'), 'zh-cn'),
                                  'count': row.get('count')}
                                 for row in res_ob.get(kind)]
-            return HttpResponse(json.dumps(result))
+            return result
         except Exception as e:
-            return HttpResponseServerError(str(e))
+            raise e
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def personality(requests):
     """
     example: https://www.104.com.tw/jb/jobwiki/jobCatMaster/personality?jobcat=2005003008
     """
-    personality_template_url = "https://www.104.com.tw/jb/jobwiki/jobCatMaster/personality?jobcat=2005003008"
     if requests.method == "GET":
         jobcat = requests.GET.get('jobCat')
         template_url = "https://www.104.com.tw/jb/jobwiki/jobCatMaster/personality?jobcat={}"
@@ -67,13 +71,14 @@ def personality(requests):
                 res.raise_for_status()
                 res_ob = res.json()
             result = res_ob.get('big5')
-            return HttpResponse(json.dumps(result))
+            return result
         except Exception as e:
-            return HttpResponseServerError(str(e))
+            raise e
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def wage(requests):
     """
     TODO: Use local data
@@ -81,13 +86,14 @@ def wage(requests):
     if requests.method == "GET":
         jobcat = requests.GET.get('jobCat')
         try:
-            pass
+            return ""
         except Exception as e:
-            return HttpResponseServerError(str(e))
+            raise e
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def major(requests):
     """
     https://www.104.com.tw/jb/jobwiki/jobCatMaster/major?jobcat=2005003008&top=50
@@ -106,13 +112,14 @@ def major(requests):
                 res_ob = res.json()
             result = [{'majorName': convert(row.get('majorName'), 'zh-cn'),
                        'count': row.get('count')} for row in res_ob.get('majors')]
-            return HttpResponse(json.dumps(result))
+            return result
         except Exception as e:
-            return HttpResponseServerError(str(e))
+            raise e
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def ageSex(requests):
     """
     https://www.104.com.tw/jb/jobwiki/jobCatMaster/bmi?jobcat=2005003008
@@ -136,13 +143,14 @@ def ageSex(requests):
                         'male': v.get('male'),
                         'female': v.get('female')
                     }
-            return HttpResponse(json.dumps(result))
+            return result
         except Exception as e:
-            return HttpResponseServerError(str(e))
+            raise e
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def task(requests):
     """
     https://www.104.com.tw/jb/jobwiki/jobCatMaster/task?jobcat=2005003008
@@ -161,11 +169,11 @@ def task(requests):
                 res_ob = res.json()
             result = {'content': convert(res_ob.get('content'), 'zh-cn'),
                       'missions': [convert(v, 'zh-cn') for v in res_ob.get('missions')]}
-            return HttpResponse(json.dumps(result))
+            return result
         except Exception as e:
-            return HttpResponseServerError(str(e))
+            raise e
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
 def get_holland(ans: list):
@@ -179,23 +187,25 @@ def get_holland(ans: list):
     return t[:3]
 
 
+@HttpWrapper
 def hollandCode(requests):
     if requests.method == "POST":
         post_body = json.loads(requests.body)
         holland_answer = post_body.get('hollandAnswer')
         if holland_answer is None:
-            return HttpResponseBadRequest('No Key name hollandAnswer')
+            raise NoValue('body no key hollandAnswer')
         holland_code = get_holland(holland_answer)
         result = {
             'key1': holland_code[0],
             'key2': holland_code[1],
             'key3': holland_code[2]
         }
-        return HttpResponse(json.dumps(result))
+        return result
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError
 
 
+@HttpWrapper
 def hollandCodeQuestions(requests):
     if requests.method == "GET":
         start_index = requests.GET.get('startIndex') if requests.GET.get(
@@ -205,8 +215,8 @@ def hollandCodeQuestions(requests):
         try:
             start_index, number = int(start_index), int(number)
         except:
-            return HttpResponseBadRequest("Not support value of startIndex, number")
+            raise ValueError("Not support value of startIndex, number")
         result = HollandQuestions.questions[start_index:start_index+number]
-        return HttpResponse(json.dumps(result))
+        return result
     else:
-        return HttpResponseBadRequest("Not support to such request method")
+        raise MethodError

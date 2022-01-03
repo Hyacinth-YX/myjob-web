@@ -5,7 +5,7 @@ import store from "./store";
 import "./quasar";
 import api from "./service/api";
 
-Vue.$api = api;
+Vue.prototype.$api = api;
 Vue.config.productionTip = false;
 
 new Vue({

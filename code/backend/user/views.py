@@ -1,13 +1,14 @@
-from django import http
-from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.middleware.csrf import get_token
 import json
 from .models import User
+from utils.http import HttpWrapper
+from utils.errors import NoUser, DuplicateUser, PasswordIncorrect, MethodError
 
 
+@HttpWrapper
 def login(request):
     if request.session.get('is_login', None):
-        return HttpResponse({'code': 0, 'result': 'logged'})
+        return {'result': 'logged'}
     if request.method == "POST":
         body_data = json.loads(request.body)
         username = body_data.get('username', None).strip()
@@ -16,19 +17,19 @@ def login(request):
             try:
                 user = User.objects.get(name=username)
             except:
-                return HttpResponse(json.dumps({'code': 1, 'result': 'no user'}))
+                raise NoUser
             if user.password == password:
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
-                return HttpResponse(json.dumps({'code': 0, 'result': 'success'}))
+                return {'result': 'success'}
             else:
-                raise HttpResponse(json.dumps(
-                    {'code': 2, 'result': 'password incorrect'}))
+                raise PasswordIncorrect
     else:
-        return HttpResponseBadRequest('Method Error')
+        raise MethodError
 
 
+@HttpWrapper
 def register(requests):
     if requests.method == "POST":
         try:
@@ -37,31 +38,35 @@ def register(requests):
             password = post_body.get('password')
             email = post_body.get('email')
             User.objects.get(name=userName)
-            return HttpResponse(json.dumps({'code': 1, 'result': 'username exist'}))
+            raise DuplicateUser
         except:
             try:
                 User.objects.create(
                     name=userName, password=password, email=email)
-                return HttpResponse(json.dumps({'code': 0, 'result': 'add user successfully'}))
+                return {'result': 'add user successfully'}
             except Exception as e:
-                return HttpResponse(json.dumps({'code': 2, 'result': f"Error:[{str(e)}]"}))
+                raise e
 
 
+@HttpWrapper
 def logout(request):
     if not request.session.get('is_login', False):
-        return HttpResponse(json.dumps({'code': 0, 'result': 'Nothing happen'}))
+        return {'result': 'Nothing happen', "is_login": False}
     request.session.flush()
-    return HttpResponse(json.dumps({'code': 0, "result": "success", "temp": request.session.get('is_login', False)}))
+    return {"result": "success", "is_login": request.session.get('is_login', False)}
 
 
+@HttpWrapper
 def setToken(request):
     get_token(request)
-    return HttpResponse(json.dumps({'code': 0, 'result': True}))
+    return {'result': True}
 
 
+@HttpWrapper
 def isLogin(request):
-    return HttpResponse(json.dumps({'result': request.session.get('is_login', False)}))
+    return {'result': request.session.get('is_login', False)}
 
 
+@HttpWrapper
 def users(requests):
     pass

@@ -179,11 +179,12 @@ export default {
       }
       return i;
     },
-    sendtestresults: function () {
+    sendtestresults: async function () {
       var flag = true;
       var first = true;
       var firstnum = 0;
       for (let i = 0; i < this.holland.length; i++) {
+        this.checklist[i] = 0;
         if (this.checklist[i] != -1) {
           this.summitcheck[i] = true;
         }
@@ -202,6 +203,10 @@ export default {
       }
       if (flag) {
         // TODO: submit form here
+        let result = { hollandAnswer: this.checklist };
+        let res = await this.$api.bigjob.postHollandCodeTest(result);
+        console.log(res);
+        console.log(res.data);
         return alert("ok");
       } else {
         for (let i = 0; i < 86; i++) {
