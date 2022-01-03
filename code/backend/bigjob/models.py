@@ -3,17 +3,43 @@ from django.db import models
 # Create your models here.
 
 
-class BigJob(models.Model):
+class Job(models.Model):
     jobName = models.CharField(verbose_name="工作名称", max_length=64)
-    jobSalary = models.CharField(max_length=64)
-    jobLimitExperience = models.CharField(max_length=64)
-    jobLimitStudy = models.CharField(max_length=64)
-    jobArea = models.CharField(max_length=64)
-    companyName = models.CharField(max_length=64)
-    financialStatus = models.CharField(max_length=64)
-    scale = models.CharField(max_length=64)
-    companyLogo = models.CharField(max_length=256)
-    bonus = models.CharField(max_length=64)
+    jobSubName = models.CharField(max_length=64, null=True)
+    jobSalary = models.CharField(max_length=64, null=True)
+    jobLimitExperience = models.CharField(max_length=64, null=True)
+    jobLimitStudy = models.CharField(max_length=64, null=True)
+    jobArea = models.CharField(max_length=64, null=True)
+    companyName = models.CharField(max_length=64, null=True)
+    jobIndustry = models.CharField(max_length=64, null=True)
+    financialStatus = models.CharField(max_length=64, null=True)
+    scale = models.CharField(max_length=64, null=True)
+    companyLogo = models.CharField(max_length=256, null=True)
+    bonus = models.CharField(max_length=64, null=True)
+    jid = models.CharField(max_length=128)
+    lid = models.CharField(max_length=128)
+    jobDescription = models.TextField(null=True)
+
+    def __str__(self) -> str:
+        return self.jobName
+
+    class Meta:
+        db_table = "job"
+        verbose_name_plural = "具体岗位"
+        verbose_name = "具体岗位"
+
+
+class BigJob(models.Model):
+    jobCat = models.IntegerField(verbose_name='catid')
+    jobName = models.CharField(verbose_name="工作名称", max_length=64)
+    jobDesc = models.TextField(null=True)
+    jobWork = models.TextField(null=True)
+    bigJobImg = models.CharField(max_length=256, null=True)
+    holland1 = models.CharField(max_length=1, null=True)
+    holland2 = models.CharField(max_length=1, null=True)
+    holland3 = models.CharField(max_length=1, null=True)
+    subject1 = models.CharField(max_length=64, null=True)
+    subject2 = models.CharField(max_length=64, null=True)
 
     def __str__(self) -> str:
         return self.jobName
