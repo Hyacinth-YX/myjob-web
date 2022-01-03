@@ -1,11 +1,8 @@
-from bs4.element import ResultSet
 from django.http.response import HttpResponseServerError
-from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest
 import json
 import numpy as np
 import pandas as pd
-from numpy.core.fromnumeric import trace
 from zhconv import convert
 import requests as req
 from .models import HollandQuestions
@@ -83,7 +80,6 @@ def wage(requests):
     """
     if requests.method == "GET":
         jobcat = requests.GET.get('jobCat')
-
         try:
             pass
         except Exception as e:
