@@ -10,6 +10,7 @@ from .models import HollandQuestions, BigJob, Job
 from utils.http import HttpWrapper
 from utils.errors import MethodError, NoValue
 import os
+from backend.settings import BASE_DIR
 os.chdir(os.path.dirname(__file__))
 
 
@@ -32,7 +33,7 @@ def jobs(requests: HttpRequest):
         raise MethodError
 
 
-related_job = pd.read_csv('./relatedjob.csv')
+related_job = pd.read_csv(os.path.join(BASE_DIR,'data/relatedjob.csv'))
 related_job = related_job.dropna().drop_duplicates().astype(int)
 @HttpWrapper
 def releventJob(requests: HttpRequest):

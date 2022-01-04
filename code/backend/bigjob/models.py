@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Job(models.Model):
     jobName = models.CharField(verbose_name="工作名称", max_length=64)

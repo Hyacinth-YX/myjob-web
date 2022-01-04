@@ -26,6 +26,8 @@ tags:
     description: "User control"
   - name: "test"
     description: "Test API"
+  - name: recommend
+    description: "recommend system"
 paths:
   /test:
     get:
@@ -601,3 +603,61 @@ paths:
                     scales:
                       type: number
                       example: 123223
+  /recommend/recordBigjob:
+    get:
+      description: ""
+      tags:
+        - "recommend"
+      parameters:
+        - in: query
+          name: uid
+          schema:
+            type: number
+            example: 103203
+        - in: query
+          name: jobCat
+          schema:
+            type: number
+            example: 12342323
+      responses:
+        "200":
+          description: OK
+  /recommend/recordJob:
+    get:
+      description: ""
+      tags:
+        - "recommend"
+      parameters:
+        - in: query
+          name: uid
+          schema:
+            type: number
+            example: 103203
+        - in: query
+          name: jobId
+          schema:
+            type: number
+            example: 12342323
+      responses:
+        "200":
+          description: OK
+  /recommend/recommendJob:
+    get:
+      description: ''
+      parameters:
+        - in: query
+          name: uid
+          schema:
+            type: number
+            example: 2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: number
+                  example: 201292
+                
