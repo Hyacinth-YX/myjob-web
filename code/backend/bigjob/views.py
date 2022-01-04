@@ -1,3 +1,4 @@
+from pickle import NONE
 from django.http.response import HttpResponseServerError
 from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest
 from django.forms.models import model_to_dict
@@ -10,7 +11,9 @@ from .models import HollandQuestions, BigJob, Job
 from utils.http import HttpWrapper
 from utils.errors import MethodError, NoValue
 import os
+from utils.utils import salary_parse
 from backend.settings import BASE_DIR
+import random
 os.chdir(os.path.dirname(__file__))
 
 
@@ -32,9 +35,42 @@ def jobs(requests: HttpRequest):
     else:
         raise MethodError
 
+@HttpWrapper
+def allBigJobs(requests: HttpRequest):
+    if requests.method == "GET":
+        limit = int(requests.GET.get('limit')) if requests.GET.get(
+            'limit') is not None and requests.GET.get('limit').isnumeric() else None
+        if requests.GET.get('useCache') is None:
+            result = list(BigJob.objects.all().values())
+            for o in result:
+                try:
+                    resultSet = list(Job.objects.filter(jobName=o['jobName']).values())
+                    daily_salary = [salary_parse(o.get('jobSalary'))for o in resultSet]
+                    daily_salary = [v for v in daily_salary if v > 0]
+                    if len(daily_salary) > 0:
+                        daily_salary = sum(daily_salary)/len(daily_salary)
+                    else:
+                        daily_salary = 100000
+                    o['salary'] = daily_salary
+                except Exception as e:
+                    print(e)
+            result.sort(key=lambda x: x.get('salary'),reverse=True)
+            with open(os.path.join(BASE_DIR, 'data/bigjobsCache.json'),'w') as f:
+                f.write(json.dumps(result))
+        else:
+            with open(os.path.join(BASE_DIR, 'data/bigjobsCache.json'), 'r') as f:
+                result = json.loads(f.read())
+        if limit is not None:
+            result = result[:limit]
+        return result
+    else:
+        raise MethodError
 
-related_job = pd.read_csv(os.path.join(BASE_DIR,'data/relatedjob.csv'))
+
+related_job = pd.read_csv(os.path.join(BASE_DIR, 'data/relatedjob.csv'))
 related_job = related_job.dropna().drop_duplicates().astype(int)
+
+
 @HttpWrapper
 def releventJob(requests: HttpRequest):
     if requests.method == "GET":
@@ -66,7 +102,26 @@ def jobdetail(requests: HttpRequest):
 def bigjobSalaryTrend(requests: HttpRequest):
     if requests.method == "GET":
         jobcat = requests.GET.get('jobCat')
-        pass
+        big_ob = BigJob.objects.get(jobCat=jobcat)
+        resultSet = list(Job.objects.filter(jobName=big_ob.jobName).values())
+        daily_salary = [salary_parse(o.get('jobSalary'))for o in resultSet]
+        daily_salary = [v for v in daily_salary if v > 0]
+        if len(daily_salary) > 0:
+            daily_salary = sum(daily_salary)/len(daily_salary)
+        else:
+            daily_salary = 100000
+        start_date = (2010, 1)
+        end_date = (2022, 1)
+        result = []
+        for year in range(end_date[0], start_date[0]-1, -1):
+            for month in range(12, 0, -1):
+                result.append({
+                    "Date": str(year) + '-' + str(month),
+                    "scales": daily_salary
+                })
+                daily_salary += (random.random()-0.8)*30*10
+        result.reverse()
+        return result
     else:
         raise MethodError
 
@@ -77,6 +132,7 @@ def jobSalaryTrend(requests: HttpRequest):
         pass
     else:
         raise MethodError
+
 
 @HttpWrapper
 def tags(requests: HttpRequest):

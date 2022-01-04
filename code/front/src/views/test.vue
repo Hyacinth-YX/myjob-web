@@ -168,7 +168,7 @@ export default {
       console.log(index);
       if (index <= this.checklist.length - 1) {
         this.virtualListIndex = index;
-        this.$refs.virtualListRef.scrollTo(index, "center");
+        this.$refs.virtualListRef.scrollTo(index, "center-force");
       }
     },
     lastindex() {

@@ -1,6 +1,7 @@
 <template>
   <q-page>
     <!--底层页面-->
+    <particles-bg :bg="true" type="cobweb" num="100"></particles-bg>
     <div class="row">
       <!--帖子内容与楼层-->
       <div class="col-8  q-ml-xl">
@@ -16,7 +17,7 @@
         </div>
         <!--帖子与回复-->
         <q-list bordered separator>
-          <forumItem v-for="body of postbody" :key="body.id" :body="body" class="q-pa-md"/>
+          <forumItem v-for="body of postbody" :key="body.id" :body="body" class="q-pa-md discussion-item-class"/>
         </q-list>
         <!--回复区域-->
         <div class="q-mt-md">
@@ -128,12 +129,14 @@
 <script>
 import ForumItem from "../components/ForumItem"
 import HeatRank from "../components/HeatRank"
+import { ParticlesBg } from "particles-bg-vue";
 
 export default {
   name: "Post",
   components: {
     ForumItem,
-    HeatRank
+    HeatRank,
+    ParticlesBg,
   },
   data() {
     return {
@@ -201,5 +204,8 @@ export default {
 
 
 <style scoped>
+.discussion-item-class{
+  background: #F6F6F6;
+}
 
 </style>

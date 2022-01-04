@@ -29,10 +29,23 @@ const bigjob = {
       `/api/bigjob/hollandCodeQuestions?startIndex=${startIndex}&number=${number}`
     );
   },
-  
   postHollandCodeTest(data) {
     return instance.post(`/api/bigjob/hollandCode`, data);
   },
+  getJobDetail(jobId) {
+    return instance.get(`/api/bigjob/jobdetail?jobId=${jobId}`);
+  },
+  bigjobSalaryTrend(jobCat) {
+    return instance.get(`/api/bigjob/graph/bigjobSalaryTrend?jobCat=${jobCat}`);
+  },
+  jobSalaryTrend(jobCat) {
+    return instance.get(`/api/bigjob/graph/jobSalaryTrend?jobCat=${jobCat}`);
+  },
+  allBigJobs(limit){
+    return instance.get(
+      `/api/bigjob/allBigJobs?limit=${limit}&useCache=True`
+    );
+  }
 };
 
 export default bigjob;

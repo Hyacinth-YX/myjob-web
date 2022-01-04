@@ -12,6 +12,7 @@ urlpatterns = [
     path('hollandCode', views.hollandCode),
     path('hollandCodeQuestions', views.hollandCodeQuestions),
     path('jobdetail', views.jobdetail),
-    path('bigjobSalaryTrend', views.bigjobSalaryTrend),
-    path('jobSalaryTrend', views.jobSalaryTrend)
+    path('graph/bigjobSalaryTrend', views.bigjobSalaryTrend),
+    path('graph/jobSalaryTrend', views.jobSalaryTrend),
+    path('allBigJobs', views.allBigJobs)
 ]

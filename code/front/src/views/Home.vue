@@ -60,13 +60,15 @@
             <q-item
               clickable
               v-ripple
-              v-for="itemContent in industry"
+              v-for="item in industry"
               @click="goToIndustry"
-              :key="itemContent.id"
+              :key="item.id"
             >
               <q-item-section>
-                <q-item-label>{{ itemContent }}</q-item-label>
-                <q-item-label caption>年薪：100-200w</q-item-label>
+                <q-item-label>{{ item.jobName }}</q-item-label>
+                <q-item-label caption
+                  >年薪：{{ item.salary | number }}</q-item-label
+                >
               </q-item-section>
             </q-item>
           </q-list>
@@ -88,7 +90,7 @@
 
 <script>
 import { Line } from "@antv/g2plot";
-import { Column } from "@antv/g2plot";
+// import { Column } from "@antv/g2plot";
 
 export default {
   name: "Home",
@@ -110,6 +112,8 @@ export default {
       ],
       rankSelect: "按行业薪资",
       rankOptions: ["按行业薪资", "按行业热度"],
+      lineGraph: null,
+      lineData: null,
     };
   },
   methods: {
@@ -117,118 +121,125 @@ export default {
       this.$router.push({ name: "Industry" });
     },
   },
-  mounted() {
-    this.jobCat = this.$route.query.jobCat ?? this.jobCat;
-    
+  mounted: async function () {
+    let res = await this.$api.bigjob.allBigJobs();
+    this.industry = res.data.data;
+    this.jobCat = this.industry[0].jobCat;
+    res = await this.$api.bigjob.bigjobSalaryTrend(this.jobCat);
+    this.lineData = res.data.data;
 
-    fetch(
-      "https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const line = new Line("trend-container", {
-          data,
-          autoFit: true,
-          padding: "auto",
-          xField: "Date",
-          yField: "scales",
-          annotations: [
-            // 低于中位数颜色变化
-            {
-              type: "regionFilter",
-              start: ["min", "median"],
-              end: ["max", "0"],
-              color: "#F4664A",
-            },
-            {
-              type: "text",
-              position: ["min", "median"],
-              content: "中位数",
-              offsetY: -4,
-              style: {
-                textBaseline: "bottom",
-              },
-            },
-            {
-              type: "line",
-              start: ["min", "median"],
-              end: ["max", "median"],
-              style: {
-                stroke: "#F4664A",
-                lineDash: [2, 2],
-              },
-            },
-          ],
-        });
-        line.render();
-      });
-    const data = [
-      {
-        type: "0-1w",
-        sales: 38,
-      },
-      {
-        type: "1-2w",
-        sales: 52,
-      },
-      {
-        type: "2-3w",
-        sales: 61,
-      },
-      {
-        type: "3-4w",
-        sales: 145,
-      },
-      {
-        type: "4-5w",
-        sales: 48,
-      },
-      {
-        type: "5-6w",
-        sales: 38,
-      },
-      {
-        type: "6-7w",
-        sales: 38,
-      },
-      {
-        type: "7-8w",
-        sales: 38,
-      },
-    ];
+    const data = this.lineData;
 
-    const columnPlot = new Column("distribution-container", {
+    this.lineGraph = new Line("trend-container", {
       data,
-      xField: "type",
-      yField: "sales",
       autoFit: true,
-      columnWidthRatio: 0.95,
-      label: {
-        // 可手动配置 label 数据标签位置
-        position: "middle", // 'top', 'bottom', 'middle',
-        // 配置样式
-        style: {
-          fill: "#FFFFFF",
-          opacity: 0.6,
+      padding: "auto",
+      xField: "Date",
+      yField: "scales",
+      annotations: [
+        {
+          type: "regionFilter",
+          start: ["min", "median"],
+          end: ["max", "0"],
+          color: "#F4664A",
         },
-      },
-      xAxis: {
-        label: {
-          autoHide: true,
-          autoRotate: false,
+        {
+          type: "text",
+          position: ["min", "median"],
+          content: "中位数",
+          offsetY: -4,
+          style: {
+            textBaseline: "bottom",
+          },
         },
-      },
-      meta: {
-        type: {
-          alias: "类别",
+        {
+          type: "line",
+          start: ["min", "median"],
+          end: ["max", "median"],
+          style: {
+            stroke: "#F4664A",
+            lineDash: [2, 2],
+          },
         },
-        sales: {
-          alias: "销售额",
-        },
-      },
+      ],
     });
+    this.lineGraph.render();
 
-    columnPlot.render();
+    // fetch(
+    //   "https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json"
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => {
+
+    //   });
+
+    // data = [
+    //   {
+    //     type: "0-1w",
+    //     sales: 38,
+    //   },
+    //   {
+    //     type: "1-2w",
+    //     sales: 52,
+    //   },
+    //   {
+    //     type: "2-3w",
+    //     sales: 61,
+    //   },
+    //   {
+    //     type: "3-4w",
+    //     sales: 145,
+    //   },
+    //   {
+    //     type: "4-5w",
+    //     sales: 48,
+    //   },
+    //   {
+    //     type: "5-6w",
+    //     sales: 38,
+    //   },
+    //   {
+    //     type: "6-7w",
+    //     sales: 38,
+    //   },
+    //   {
+    //     type: "7-8w",
+    //     sales: 38,
+    //   },
+    // ];
+
+    // const columnPlot = new Column("distribution-container", {
+    //   data,
+    //   xField: "type",
+    //   yField: "sales",
+    //   autoFit: true,
+    //   columnWidthRatio: 0.95,
+    //   label: {
+    //     // 可手动配置 label 数据标签位置
+    //     position: "middle", // 'top', 'bottom', 'middle',
+    //     // 配置样式
+    //     style: {
+    //       fill: "#FFFFFF",
+    //       opacity: 0.6,
+    //     },
+    //   },
+    //   xAxis: {
+    //     label: {
+    //       autoHide: true,
+    //       autoRotate: false,
+    //     },
+    //   },
+    //   meta: {
+    //     type: {
+    //       alias: "类别",
+    //     },
+    //     sales: {
+    //       alias: "销售额",
+    //     },
+    //   },
+    // });
+
+    // columnPlot.render();
   },
 };
 </script>

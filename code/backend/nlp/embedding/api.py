@@ -30,7 +30,7 @@ class BertEmbedding():
         attention_masks = torch.tensor(attention_masks).to(self.device)
         outputs = self.model(input_ids, token_type_ids=None,
                              attention_mask=attention_masks)
-        return outputs.pooler_output
+        return outputs.pooler_output.squeeze().detach().numpy().tolist()
 
 
 if __name__ == '__main__':

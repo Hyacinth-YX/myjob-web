@@ -7,6 +7,9 @@ import api from "./service/api";
 
 Vue.prototype.$api = api;
 Vue.config.productionTip = false;
+Vue.filter("number", function (data) {
+  return data.toFixed(2);
+});
 
 new Vue({
   router,

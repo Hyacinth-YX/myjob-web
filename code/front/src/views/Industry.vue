@@ -83,6 +83,7 @@ export default {
   name: "Industry",
   data() {
     return {
+      
       industryName: "计算机/网络/技术类",
       industryDescription: "计算机网络技术主要研究计算机网络和网络工程等方面基本知识和技能，进行网络安装维护、" +
           "网络管理、网络软件部署、系统集成、计算机软硬件方面的维护与营销、数据库管理等。例如：电脑等设备安装与调试，" +
@@ -207,6 +208,7 @@ export default {
     }
   },
   mounted() {
+    this.jobCat = this.$route.query.jobCat ?? this.jobCat;
     fetch('https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json')
         .then((res) => res.json())
         .then((data) => {
