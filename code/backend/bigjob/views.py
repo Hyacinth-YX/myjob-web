@@ -1,13 +1,16 @@
 from django.http.response import HttpResponseServerError
 from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest
+from django.forms.models import model_to_dict
 import json
 import numpy as np
 import pandas as pd
 from zhconv import convert
 import requests as req
-from .models import HollandQuestions, BigJob
+from .models import HollandQuestions, BigJob, Job
 from utils.http import HttpWrapper
 from utils.errors import MethodError, NoValue
+import os
+os.chdir(os.path.dirname(__file__))
 
 
 @HttpWrapper
@@ -16,14 +19,63 @@ def jobs(requests: HttpRequest):
         keys = (requests.GET.get('key1'),
                 requests.GET.get('key2'),
                 requests.GET.get('key3'))
+        limit = int(requests.GET.get('limit')) if requests.GET.get(
+            'limit').isnumeric() else None
         options = {'holland1__in': keys,
                    'holland2__in': keys,
                    'holland3__in': keys}
         result = list(BigJob.objects.filter(**options).values())
+        if limit is not None:
+            result = result[:limit]
         return result
     else:
         raise MethodError
 
+
+related_job = pd.read_csv('./relatedjob.csv')
+related_job = related_job.dropna().drop_duplicates().astype(int)
+@HttpWrapper
+def releventJob(requests: HttpRequest):
+    if requests.method == "GET":
+        jobcat = requests.GET.get('jobCat')
+        if jobcat is not None and jobcat.isnumeric():
+            jobcat = int(jobcat)
+            return related_job['JobCat' == jobcat].relatedJob.to_numpy().tolist()
+        else:
+            return []
+    else:
+        raise MethodError
+
+
+@HttpWrapper
+def jobdetail(requests: HttpRequest):
+    if requests.method == "GET":
+        jobId = requests.GET.get('jobId')
+        if jobId is not None and jobId.isnumeric():
+            jobId = int(jobId)
+            ob = Job.objects.get(id=jobId)
+            return model_to_dict(ob)
+        else:
+            return {}
+    else:
+        raise MethodError
+
+
+@HttpWrapper
+def bigjobSalaryTrend(requests: HttpRequest):
+    if requests.method == "GET":
+        jobcat = requests.GET.get('jobCat')
+        pass
+    else:
+        raise MethodError
+
+
+@HttpWrapper
+def jobSalaryTrend(requests: HttpRequest):
+    if requests.method == "GET":
+        pass
+    else:
+        raise MethodError
 
 @HttpWrapper
 def tags(requests: HttpRequest):

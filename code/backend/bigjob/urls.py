@@ -10,5 +10,8 @@ urlpatterns = [
     path('ageSex', views.ageSex),
     path('task', views.tags),
     path('hollandCode', views.hollandCode),
-    path('hollandCodeQuestions', views.hollandCodeQuestions)
+    path('hollandCodeQuestions', views.hollandCodeQuestions),
+    path('jobdetail', views.jobdetail),
+    path('bigjobSalaryTrend', views.bigjobSalaryTrend),
+    path('jobSalaryTrend', views.jobSalaryTrend)
 ]

@@ -22,12 +22,8 @@ components:
 tags:
   - name: bigJob
     description: "The information about 'bigJob'"
-  - name: job
-    description: "Specific job information"
   - name: user
     description: "User control"
-  - name: "graph"
-    description: "Some data to draw graph"
   - name: "test"
     description: "Test API"
 paths:
@@ -82,40 +78,48 @@ paths:
           schema:
             type: string
             example: "R"
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 50
       responses:
         "200":
           description: Successfully get big job information
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  jobCat:
-                    $ref: "#/components/schemas/jobCat"
-                  bigJobImg:
-                    type: string
-                    description: Job cartoon image from 104 website
-                    example: "https:\/\/static.104.com.tw\/gtnew\/img\/character\/bigRole\/2005003008.png"
-                  jobName:
-                    type: string
-                    description: Name of Job
-                    example: "醫藥業務代表"
-                  jobDesc:
-                    type: string
-                    description: Simple description of Job
-                    example: "我會把藥賣出去，推廣客戶需要的醫療產品！"
-                  jobWorks:
-                    type: string
-                    description: Specific description of job work
-                    example: "拜訪固定或非固定地區醫院、診所、藥局客戶，以開發或維護客戶關係。\n銷售及推廣公司產品，例如醫療研究用儀器或醫藥耗材等。\n教育及示範產品使用方式。\n協助客戶使用產品。\n提供新客戶相關之行銷或經營輔導。\n宣導與執行公司的理念予店家。"
-                  subject1:
-                    type: string
-                    description: First level subject
-                    example: "social"
-                  subject2:
-                    type: string
-                    description: Second level subject
-                    example: "biology"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    jobCat:
+                      $ref: "#/components/schemas/jobCat"
+                    bigJobImg:
+                      type: string
+                      description: Job cartoon image from 104 website
+                      example: "https:\/\/static.104.com.tw\/gtnew\/img\/character\/bigRole\/2005003008.png"
+                    jobName:
+                      type: string
+                      description: Name of Job
+                      example: "醫藥業務代表"
+                    jobDesc:
+                      type: string
+                      description: Simple description of Job
+                      example: "我會把藥賣出去，推廣客戶需要的醫療產品！"
+                    jobWorks:
+                      type: string
+                      description: Specific description of job work
+                      example: "拜訪固定或非固定地區醫院、診所、藥局客戶，以開發或維護客戶關係。\n銷售及推廣公司產品，例如醫療研究用儀器或醫藥耗材等。\n教育及示範產品使用方式。\n協助客戶使用產品。\n提供新客戶相關之行銷或經營輔導。\n宣導與執行公司的理念予店家。"
+                    subject1:
+                      type: string
+                      description: First level subject
+                      example: "social"
+                    subject2:
+                      type: string
+                      description: Second level subject
+                      example: "biology"
   /bigjob/tags:
     get:
       description: "Get inffered tags of big job"
@@ -306,50 +310,6 @@ paths:
       responses:
         "200":
           description: OK
-  /job/detail:
-    get:
-      description: "get specific job details"
-      tags:
-        - "job"
-      parameters: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  jobName:
-                    type: string
-                    example: 医药代表
-                  jobSalary:
-                    type: string
-                    example: 15-20k·13薪
-                  jobLimitExperience:
-                    type: string
-                    example: 经验不限
-                  jobLimitStudy:
-                    type: string
-                    example: 大专
-                  jobArea:
-                    type: string
-                    example: 上海·浦东新区·张江
-                  companyName:
-                    type: string
-                    example: 阿斯利康
-                  financialStatus:
-                    type: string
-                    example: 已上市
-                  scale:
-                    type: string
-                    example: 10000人以上
-                  companyLogo:
-                    type: string
-                    example: companyLogo
-                  bonus:
-                    type: string
-                    example: 带薪年假
   /user/logout:
     get:
       description: ""
@@ -520,3 +480,124 @@ paths:
                 items:
                   type: string
                   example: "我喜欢把东西拆开，看看能否修理他们。"
+  /bigjob/jobdetail:
+    get:
+      tags:
+        - "bigJob"
+      description: ""
+      parameters:
+        - in: query
+          name: jobId
+          schema:
+            type: number
+            example: 2344
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobName:
+                    type: string
+                    example: 医药代表
+                  jobSubName:
+                    type: string
+                    example: java开发
+                  jobSalary:
+                    type: string
+                    example: 15-20k·13薪
+                  jobLimitExperience:
+                    type: string
+                    example: 经验不限
+                  jobLimitStudy:
+                    type: string
+                    example: 大专
+                  jobArea:
+                    type: string
+                    example: 上海·浦东新区·张江
+                  companyName:
+                    type: string
+                    example: 阿斯利康
+                  financialStatus:
+                    type: string
+                    example: 已上市
+                  scale:
+                    type: string
+                    example: 10000人以上
+                  companyLogo:
+                    type: string
+                    example: companyLogo
+                  bonus:
+                    type: string
+                    example: 带薪年假
+  /bigjob/releventJob:
+    get:
+      tags:
+        - "bigJob"
+      description: ""
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/jobCat"
+  /bigjob/graph/bigjobSalaryTrend:
+    get:
+      tags:
+        - "bigJob"
+      description: ""
+      parameters:
+        - in: query
+          name: jobCat
+          required: true
+          schema:
+            $ref: "#/components/schemas/jobCat"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Date:
+                      type: string
+                      example: "2010-01"
+                    scales:
+                      type: number
+                      example: 123223
+  /bigjob/graph/jobSalaryTrend:
+    get:
+      tags:
+        - "bigJob"
+      description: ""
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Date:
+                      type: string
+                      example: "2010-01"
+                    scales:
+                      type: number
+                      example: 123223

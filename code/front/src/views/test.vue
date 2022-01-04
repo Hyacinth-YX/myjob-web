@@ -202,18 +202,21 @@ export default {
         }
       }
       if (flag) {
-        // TODO: submit form here
         let result = { hollandAnswer: this.checklist };
         let res = await this.$api.bigjob.postHollandCodeTest(result);
-        console.log(res);
-        console.log(res.data);
-        return alert("ok");
+        // TODO: 将holland code添加到userTestResult表中
+        this.$router.push({
+          name:'TestResult',
+          query:res.data.data
+        })
+        return;
       } else {
         for (let i = 0; i < 86; i++) {
           this.scrollNext(firstnum);
         }
         console.log(firstnum);
-        return alert(s);
+        alert(s);
+        return;
       }
     },
   },

@@ -1,9 +1,9 @@
 import { instance } from "../utils/http"; // 导入http中创建的axios实例
 
 const bigjob = {
-  jobs(key1, key2, key3) {
+  jobs(key1, key2, key3, limit = "") {
     return instance.get(
-      `/api/bigjob/jobs?key1=${key1}&key2=${key2}&key3=${key3}`
+      `/api/bigjob/jobs?key1=${key1}&key2=${key2}&key3=${key3}&limit=${limit}`
     );
   },
   getTags(jobCat) {
@@ -29,6 +29,7 @@ const bigjob = {
       `/api/bigjob/hollandCodeQuestions?startIndex=${startIndex}&number=${number}`
     );
   },
+  
   postHollandCodeTest(data) {
     return instance.post(`/api/bigjob/hollandCode`, data);
   },

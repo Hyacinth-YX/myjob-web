@@ -202,8 +202,8 @@ export default {
     }
   },
   methods: {
-    goToJob() {
-      this.$router.replace({name: "Job"})
+    goToJob() { 
+      this.$router.push({name: "Job"})
     }
   },
   mounted() {
