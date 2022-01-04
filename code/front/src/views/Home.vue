@@ -61,7 +61,7 @@
               clickable
               v-ripple
               v-for="item in industry"
-              @click="goToIndustry"
+              @click="goToIndustry(item.jobCat)"
               :key="item.id"
             >
               <q-item-section>
@@ -90,7 +90,6 @@
 
 <script>
 import { Line } from "@antv/g2plot";
-// import { Column } from "@antv/g2plot";
 
 export default {
   name: "Home",
@@ -117,8 +116,8 @@ export default {
     };
   },
   methods: {
-    goToIndustry() {
-      this.$router.push({ name: "Industry" });
+    goToIndustry(jobCat) {
+      this.$router.push({ name: "Industry", query: { jobCat: jobCat } });
     },
   },
   mounted: async function () {
@@ -164,82 +163,6 @@ export default {
       ],
     });
     this.lineGraph.render();
-
-    // fetch(
-    //   "https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json"
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-
-    //   });
-
-    // data = [
-    //   {
-    //     type: "0-1w",
-    //     sales: 38,
-    //   },
-    //   {
-    //     type: "1-2w",
-    //     sales: 52,
-    //   },
-    //   {
-    //     type: "2-3w",
-    //     sales: 61,
-    //   },
-    //   {
-    //     type: "3-4w",
-    //     sales: 145,
-    //   },
-    //   {
-    //     type: "4-5w",
-    //     sales: 48,
-    //   },
-    //   {
-    //     type: "5-6w",
-    //     sales: 38,
-    //   },
-    //   {
-    //     type: "6-7w",
-    //     sales: 38,
-    //   },
-    //   {
-    //     type: "7-8w",
-    //     sales: 38,
-    //   },
-    // ];
-
-    // const columnPlot = new Column("distribution-container", {
-    //   data,
-    //   xField: "type",
-    //   yField: "sales",
-    //   autoFit: true,
-    //   columnWidthRatio: 0.95,
-    //   label: {
-    //     // 可手动配置 label 数据标签位置
-    //     position: "middle", // 'top', 'bottom', 'middle',
-    //     // 配置样式
-    //     style: {
-    //       fill: "#FFFFFF",
-    //       opacity: 0.6,
-    //     },
-    //   },
-    //   xAxis: {
-    //     label: {
-    //       autoHide: true,
-    //       autoRotate: false,
-    //     },
-    //   },
-    //   meta: {
-    //     type: {
-    //       alias: "类别",
-    //     },
-    //     sales: {
-    //       alias: "销售额",
-    //     },
-    //   },
-    // });
-
-    // columnPlot.render();
   },
 };
 </script>

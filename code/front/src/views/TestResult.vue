@@ -48,7 +48,7 @@
           >查看所有</q-btn
         >
       </div>
-      <q-virtual-scroll :items="recommendJobs" virtual-scroll-horizontal style="height:300px;overflow:hidden">
+      <q-virtual-scroll :items="recommendJobs" virtual-scroll-horizontal style="height:300px;">
         <template v-slot="{ item, index }">
           <div
             :key="index"
@@ -104,7 +104,7 @@
 export default {
   methods: {
     gotoJob(jobCat) {
-      alert(jobCat);
+      this.$router.push({name:'Industry',query:{jobCat: jobCat}})
     },
     seeAll() {
       this.ifSeeAll = true;

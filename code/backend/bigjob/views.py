@@ -35,6 +35,7 @@ def jobs(requests: HttpRequest):
     else:
         raise MethodError
 
+
 @HttpWrapper
 def allBigJobs(requests: HttpRequest):
     if requests.method == "GET":
@@ -44,8 +45,10 @@ def allBigJobs(requests: HttpRequest):
             result = list(BigJob.objects.all().values())
             for o in result:
                 try:
-                    resultSet = list(Job.objects.filter(jobName=o['jobName']).values())
-                    daily_salary = [salary_parse(o.get('jobSalary'))for o in resultSet]
+                    resultSet = list(Job.objects.filter(
+                        jobName=o['jobName']).values())
+                    daily_salary = [salary_parse(
+                        o.get('jobSalary'))for o in resultSet]
                     daily_salary = [v for v in daily_salary if v > 0]
                     if len(daily_salary) > 0:
                         daily_salary = sum(daily_salary)/len(daily_salary)
@@ -54,8 +57,8 @@ def allBigJobs(requests: HttpRequest):
                     o['salary'] = daily_salary
                 except Exception as e:
                     print(e)
-            result.sort(key=lambda x: x.get('salary'),reverse=True)
-            with open(os.path.join(BASE_DIR, 'data/bigjobsCache.json'),'w') as f:
+            result.sort(key=lambda x: x.get('salary'), reverse=True)
+            with open(os.path.join(BASE_DIR, 'data/bigjobsCache.json'), 'w') as f:
                 f.write(json.dumps(result))
         else:
             with open(os.path.join(BASE_DIR, 'data/bigjobsCache.json'), 'r') as f:
@@ -186,13 +189,18 @@ def personality(requests):
 
 @HttpWrapper
 def wage(requests):
-    """
-    TODO: Use local data
-    """
     if requests.method == "GET":
         jobcat = requests.GET.get('jobCat')
         try:
-            return ""
+            jobName = BigJob.objects.get(jobCat=jobcat).jobName
+            resultSet = list(Job.objects.filter(jobName=jobName).values())
+            daily_salary = [salary_parse(o.get('jobSalary'))for o in resultSet]
+            daily_salary = [v for v in daily_salary if v > 0]
+            if len(daily_salary) > 0:
+                daily_salary = sum(daily_salary)/len(daily_salary)
+            else:
+                daily_salary = 100000
+            return daily_salary
         except Exception as e:
             raise e
     else:
@@ -324,5 +332,48 @@ def hollandCodeQuestions(requests):
             raise ValueError("Not support value of startIndex, number")
         result = HollandQuestions.questions[start_index:start_index+number]
         return result
+    else:
+        raise MethodError
+
+
+@HttpWrapper
+def getSubJobs(requests):
+    if requests.method == "GET":
+        jobcat = requests.GET.get('jobCat')
+        if jobcat is not None and jobcat.isnumeric():
+            jobcat = int(jobcat)
+            ob = BigJob.objects.get(jobCat=jobcat)
+            o = model_to_dict(ob)
+            resultSet = list(Job.objects.filter(
+                jobName=o['jobName']).values())
+            return resultSet
+        else:
+            return []
+    else:
+        raise MethodError
+
+@HttpWrapper
+def getBigJobDetail(requests):
+    if requests.method == "GET":
+        jobcat = requests.GET.get('jobCat')
+        if jobcat is not None and jobcat.isnumeric():
+            ob = BigJob.objects.get(jobCat=jobcat)
+            o = model_to_dict(ob)
+            return o
+        else:
+            return []
+    else:
+        raise MethodError
+
+@HttpWrapper
+def getRecommend(requests):
+    if requests.method == "GET":
+        jobId = requests.GET.get('jobId')
+        if jobId is not None and jobId.isnumeric():
+            ob = list(Job.objects.filter(id__lt=jobId)[:5].values())
+            ob += list(Job.objects.filter(id__gt=jobId)[:5].values())
+            return ob
+        else:
+            return []
     else:
         raise MethodError

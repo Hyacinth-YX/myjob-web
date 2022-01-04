@@ -14,5 +14,8 @@ urlpatterns = [
     path('jobdetail', views.jobdetail),
     path('graph/bigjobSalaryTrend', views.bigjobSalaryTrend),
     path('graph/jobSalaryTrend', views.jobSalaryTrend),
-    path('allBigJobs', views.allBigJobs)
+    path('allBigJobs', views.allBigJobs),
+    path('getSubJobs', views.getSubJobs),
+    path('getBigJobDetail', views.getBigJobDetail),
+    path('getRecommend', views.getRecommend)
 ]

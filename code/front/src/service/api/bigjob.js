@@ -41,11 +41,18 @@ const bigjob = {
   jobSalaryTrend(jobCat) {
     return instance.get(`/api/bigjob/graph/jobSalaryTrend?jobCat=${jobCat}`);
   },
-  allBigJobs(limit){
-    return instance.get(
-      `/api/bigjob/allBigJobs?limit=${limit}&useCache=True`
-    );
-  }
+  allBigJobs(limit) {
+    return instance.get(`/api/bigjob/allBigJobs?limit=${limit}&useCache=True`);
+  },
+  getSubJobs(jobCat) {
+    return instance.get(`/api/bigjob/getSubJobs?jobCat=${jobCat}`);
+  },
+  getBigJobDetail(jobCat) {
+    return instance.get(`/api/bigjob/getBigJobDetail?jobCat=${jobCat}`);
+  },
+  getRecommend(jobId) {
+    return instance.get(`/api/bigjob/getRecommend?jobId=${jobId}`);
+  },
 };
 
 export default bigjob;
