@@ -122,7 +122,8 @@ def bigjobSalaryTrend(requests: HttpRequest):
                     "Date": str(year) + '-' + str(month),
                     "scales": daily_salary
                 })
-                daily_salary += (random.random()-0.8)*30*10
+                daily_salary += (random.random()-0.6)*daily_salary*0.1
+                daily_salary = max(daily_salary, 20000)
         result.reverse()
         return result
     else:

@@ -644,6 +644,8 @@ paths:
   /recommend/recommendJob:
     get:
       description: ''
+      tags:
+        - "recommend"
       parameters:
         - in: query
           name: uid

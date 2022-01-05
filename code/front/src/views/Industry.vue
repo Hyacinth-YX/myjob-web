@@ -67,14 +67,14 @@
         >
           <q-item-section avatar>
             <img :src="item.companyLogo" style="max-width: 120px" />
-            <q-item-label
-              class="text-h6 cursor-pointer cover-color q-ma-sm"
-              @click="goToJob(item.id)"
-              >{{ item.jobSubName }}
-            </q-item-label>
           </q-item-section>
 
           <q-item-section>
+            <q-item-label
+              class="text-h6 cursor-pointer cover-color q-ma-sm"
+              @click="goToJob(item.id)"
+              >{{ item.jobSubName }} | {{item.companyName}}
+            </q-item-label>
             <q-item-label caption lines="4">
               <div>
                 <div>

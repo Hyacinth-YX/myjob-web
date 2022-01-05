@@ -62,6 +62,7 @@
               v-ripple
               v-for="item in industry"
               @click="goToIndustry(item.jobCat)"
+              @mouseover="changeJobCat(item.jobCat)"
               :key="item.id"
             >
               <q-item-section>
@@ -75,14 +76,26 @@
         </q-scroll-area>
       </div>
       <!--行业信息框-平均薪资趋势-->
-      <div class="rank-container q-pa-md col">
+      <div class="rank-container q-pa-md q-ml-sm col">
         <p><strong>平均薪资趋势</strong></p>
         <div id="trend-container" style="height: 300px"></div>
       </div>
       <!--行业信息框-薪资分布直方图-->
-      <div class="rank-container q-pa-md col">
-        <p><strong>薪资分布直方图</strong></p>
-        <div id="distribution-container" style="height: 300px"></div>
+      <div class="rank-container q-pa-md q-ml-sm col">
+        <p><strong>相关信息</strong></p>
+        <q-img
+          :src="bigjobData.bigJobImg"
+          height="70%"
+          width="70%"
+          spinner-color="white"
+          style="margin-left: 15%"
+        />
+        <div style="text-align: center" class="text-blue text-bold">
+          {{ bigjobData.jobName }}
+        </div>
+        <div style="text-align: left; text-indent: 2em">
+          {{ bigjobData.jobDesc }}
+        </div>
       </div>
     </div>
   </div>
@@ -98,26 +111,33 @@ export default {
     return {
       jobCat: "2012003002",
       searchText: "",
-      industry: [
-        "计算机/网络/技术类",
-        "销售类",
-        "经营管理类",
-        "电子/电器/通信技术类",
-        "市场/公关/媒介类",
-        "财务/审计/统计类",
-        "建筑/房地产/装饰装修/物业管理类",
-        "美术/设计/创意类",
-        "机械/仪器仪表类",
-      ],
+      industry: [],
       rankSelect: "按行业薪资",
       rankOptions: ["按行业薪资", "按行业热度"],
       lineGraph: null,
       lineData: null,
+      bigjobData: {},
     };
   },
   methods: {
     goToIndustry(jobCat) {
       this.$router.push({ name: "Industry", query: { jobCat: jobCat } });
+    },
+    changeJobCat(jobCat) {
+      this.jobCat = jobCat;
+    },
+  },
+  watch: {
+    jobCat: async function (newVal) {
+      if (this.lineGraph != null) {
+        let res = await this.$api.bigjob.bigjobSalaryTrend(newVal);
+        this.lineData = res.data.data;
+        const data = this.lineData;
+        this.lineGraph.changeData(data);
+
+        res = await this.$api.bigjob.getBigJobDetail(this.jobCat);
+        this.bigjobData = res.data.data;
+      }
     },
   },
   mounted: async function () {
@@ -127,6 +147,9 @@ export default {
     res = await this.$api.bigjob.bigjobSalaryTrend(this.jobCat);
     this.lineData = res.data.data;
 
+    res = await this.$api.bigjob.getBigJobDetail(this.jobCat);
+    this.bigjobData = res.data.data;
+
     const data = this.lineData;
 
     this.lineGraph = new Line("trend-container", {
@@ -135,6 +158,9 @@ export default {
       padding: "auto",
       xField: "Date",
       yField: "scales",
+      yAxis: {
+        min: 100000,
+      },
       annotations: [
         {
           type: "regionFilter",
