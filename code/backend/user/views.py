@@ -34,7 +34,7 @@ def register(requests):
     if requests.method == "POST":
         try:
             post_body = json.loads(requests.body)
-            userName = post_body.get('userName')
+            userName = post_body.get('username')
             password = post_body.get('password')
             email = post_body.get('email')
             User.objects.get(name=userName)

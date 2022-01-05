@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('bigjob/', include('bigjob.urls')),
     path('user/', include('user.urls')),
-    path('test/', views.test)
+    path('test/', views.test),
+    path('forum/', include('forum.urls'))
 ]
