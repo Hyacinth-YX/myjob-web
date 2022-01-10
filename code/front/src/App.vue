@@ -10,7 +10,8 @@
         </q-toolbar-title>
 
         <q-space></q-space>
-        <q-btn flat label="Sign In" @click="goToLogin"></q-btn>
+        <q-btn v-if="!isLogin" flat label="Sign In" @click="goToLogin"></q-btn>
+        <q-btn v-else flat label="Logout" @click="logout"></q-btn>
         <q-btn
           dense
           flat
@@ -31,9 +32,25 @@
 export default {
   name: "LayoutDefault",
   data() {
-    return {};
+    return {
+      isLogin: false,
+    };
+  },
+  mounted: async function () {
+    let res = await this.$api.user.isLogin();
+    this.isLogin = res.data.data.result;
+  },
+  watch: {
+    $route: async function () {
+      let res = await this.$api.user.isLogin();
+      this.isLogin = res.data.data.result;
+    },
   },
   methods: {
+    logout: async function () {
+      await this.$api.user.logout();
+      this.isLogin = false;
+    },
     goToLogin() {
       this.$router.replace({ name: "Login" });
     },

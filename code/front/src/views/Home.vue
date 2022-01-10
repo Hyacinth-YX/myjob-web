@@ -117,6 +117,7 @@ export default {
       lineGraph: null,
       lineData: null,
       bigjobData: {},
+      isLogin: false,
     };
   },
   methods: {
@@ -141,7 +142,10 @@ export default {
     },
   },
   mounted: async function () {
-    let res = await this.$api.bigjob.allBigJobs();
+    let res = await this.$api.user.isLogin();
+    this.isLogin = res.data.data.result;
+
+    res = await this.$api.bigjob.allBigJobs();
     this.industry = res.data.data;
     this.jobCat = this.industry[0].jobCat;
     res = await this.$api.bigjob.bigjobSalaryTrend(this.jobCat);

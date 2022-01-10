@@ -5,7 +5,6 @@ var instance = axios.create({
 // instance.defaults.withCredentials = false //开启后服务器才能拿到cookie
 instance.defaults.headers.post["Content-Type"] =
   "application/json; charset=UTF-8"; //配置默认请求头
-// instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let getCookie = function (cookie) {
   let reg = /csrftoken=([\w]+)[;]?/g;

@@ -73,7 +73,7 @@
             <q-item-label
               class="text-h6 cursor-pointer cover-color q-ma-sm"
               @click="goToJob(item.id)"
-              >{{ item.jobSubName }} | {{item.companyName}}
+              >{{ item.jobSubName }} | {{ item.companyName }}
             </q-item-label>
             <q-item-label caption lines="4">
               <div>
@@ -90,7 +90,7 @@
                   融资状况:
                   {{ item.financialStatus }}
                 </div>
-                <div> 
+                <div>
                   {{ item.bonus }}
                   {{ item.scale }}
                   {{ item.jobIndustry }}
@@ -107,10 +107,10 @@
               <q-icon name="loupe" />
               详细信息
             </a>
-            <a>
+            <a @click="goToDiscusstion(jobCat)" class="cursor-pointer">
               <q-icon name="forum" />
-              论坛讨论</a
-            >
+              论坛讨论
+            </a>
           </q-item-section>
         </q-item>
         <q-separator spaced inset></q-separator>
@@ -126,6 +126,7 @@ export default {
   name: "Industry",
   data() {
     return {
+      jobCat: 2000000,
       tags: {},
       personality: {},
       major: {},
@@ -167,6 +168,9 @@ export default {
     };
   },
   methods: {
+    goToDiscusstion(jobCat){
+      this.$router.push({ name: "Discussion", query: { jobCat: jobCat } });
+    },
     goToJob(jobId) {
       this.$router.push({ name: "Job", query: { jobId: jobId } });
     },
@@ -269,54 +273,6 @@ export default {
 
     res = await this.$api.bigjob.getTask(this.jobCat);
     this.information.task = res.data.data;
-
-    // const data = [
-    //   {type: '分类一', value: 27},
-    //   {type: '分类二', value: 25},
-    //   {type: '分类三', value: 18},
-    //   {type: '分类四', value: 15},
-    //   {type: '分类五', value: 10},
-    //   {type: '其他', value: 5},
-    // ];
-
-    // const piePlot = new Pie('number-pie', {
-    //   appendPadding: 10,
-    //   data,
-    //   angleField: 'value',
-    //   colorField: 'type',
-    //   radius: 0.75,
-    //   label: {
-    //     type: 'inner',
-    //     offset: '-30%',
-    //     content: ({percent}) => `${(percent * 100).toFixed(0)}%`,
-    //     style: {
-    //       fontSize: 14,
-    //       textAlign: 'center',
-    //     },
-    //   },
-    //   interactions: [{type: 'element-selected'}, {type: 'element-active'}],
-    // });
-
-    // const piePlot2 = new Pie('salary-pie', {
-    //   appendPadding: 10,
-    //   data,
-    //   angleField: 'value',
-    //   colorField: 'type',
-    //   radius: 0.75,
-    //   label: {
-    //     type: 'inner',
-    //     offset: '-30%',
-    //     content: ({percent}) => `${(percent * 100).toFixed(0)}%`,
-    //     style: {
-    //       fontSize: 14,
-    //       textAlign: 'center',
-    //     },
-    //   },
-    //   interactions: [{type: 'element-selected'}, {type: 'element-active'}],
-    // });
-
-    // piePlot.render();
-    // piePlot2.render();
   },
 };
 </script>

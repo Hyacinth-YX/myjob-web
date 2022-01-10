@@ -24,5 +24,6 @@ urlpatterns = [
     path('bigjob/', include('bigjob.urls')),
     path('user/', include('user.urls')),
     path('test/', views.test),
-    path('forum/', include('forum.urls'))
+    path('forum/', include('forum.urls')),
+    path('recommend/', include('recommend.urls'))
 ]

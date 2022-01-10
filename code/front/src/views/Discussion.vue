@@ -7,7 +7,7 @@
       <div class="col-8 q-ml-xl">
         <!--标题行-->
         <div>
-          <a class="text-h4">{{ industrylist[0].name }}</a>
+          <a class="text-h4">{{ industryInfo.jobName }}</a>
           <q-btn
             :label="personalStatus.star ? '已关注' : '+关注'"
             color="red"
@@ -20,9 +20,7 @@
         </div>
         <!--信息行-->
         <div class="text-bold text-body1">
-          当前行业薪资排名{{ industrylist[0]["rank"] }}，平均薪资{{
-            industrylist[0]["average"]
-          }}
+          平均年薪{{information.wage | number}}
         </div>
         <!--帖子行-->
         <q-list bordered separator>
@@ -174,7 +172,7 @@ export default {
   },
   data() {
     return {
-      jobCat: "2012003002",
+      jobCat: "2008001015",
       showStarBtn: true,
       personalStatus: {},
       sendPostData: {
@@ -189,9 +187,10 @@ export default {
       },
       current: 6,
       right: false,
+      industryInfo: {},
+      information: {wage:10000.23},
       industrylist: [
         { name: "计算机/网络/技术类", rank: 1, average: 10000, nposts: 50 },
-        { name: "销售类", rank: 2, average: 9999, nposts: 40 },
       ],
       posts: [
         {
@@ -222,6 +221,15 @@ export default {
       ],
     };
   },
+  mounted: async function () {
+    this.jobCat = this.$route.query.jobCat ?? this.jobCat;
+    let res = await this.$api.bigjob.getBigJobDetail(this.jobCat);
+    this.industryInfo = res.data.data;
+
+    res = await this.$api.bigjob.getWage(this.jobCat);
+    this.information.wage = res.data.data;
+
+  },
   methods: {
     overToChangeTextStatus(buttonName) {
       this.buttonTextStatus[buttonName] = !this.buttonTextStatus[buttonName];
@@ -233,7 +241,7 @@ export default {
         position: "top-right",
         icon: "announcement",
       });
-      this.$router.replace({ name: "Login" });
+      this.$router.push({ name: "Login" });
     },
     /*回到顶部*/
     upward: function () {
@@ -272,14 +280,14 @@ export default {
       });
     },
     goToPost() {
-      this.$router.replace({ name: "Post" });
+      this.$router.push({ name: "Post" });
     },
   },
 };
 </script>
 
 <style scoped>
-.discussion-item-class{
-  background: #F6F6F6;
+.discussion-item-class {
+  background: #f6f6f6;
 }
 </style>
